@@ -39,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.manager',
+    'apps.article',
     'extraapps.xadmin',
     'crispy_forms',
 ]
 
-AUTH_USER_MODEL = 'manager.UserProfile'
+# AUTH_USER_MODEL = 'manager.UserProfile'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -132,5 +132,4 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
-    os.path.join(BASE_DIR, 'extraapps/xadmin/static'),
 ]

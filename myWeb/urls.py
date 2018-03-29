@@ -16,7 +16,9 @@ Including another URLconf
 # from django.contrib import admin
 from django.conf.urls import url
 import xadmin
+from article.views import home
 
 urlpatterns = [
+    url(r'^(\d+)', home),
     url('^', xadmin.site.urls),
 ]
