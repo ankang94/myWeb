@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+{% block css %}
+    <link href="/static/article/css/mystyle.css" rel="stylesheet">
+{% endblock %}
+{% block block-content %}
+    <ol class="breadcrumb">
+        <li><a class="url_param_group">{{ group }}</a></li>
+    </ol>
+    <div class="list-group">
+        {% for foo in catlog %}
+            <a href="/article/{{ foo.index }}" class="list-group-item">
+                <h4 class="list-group-item-heading">{{ foo.title }}
+                    <small>{{ foo.comment }}</small>
+                </h4>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="/static/article/js/myjs.js"></script>
+{% endblock %}

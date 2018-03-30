@@ -4,14 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>welcome</title>
+    <title>安康Blog</title>
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/article/css/mystyle.css" rel="stylesheet">
     <script src="/static/jquery/jquery.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/static/article/js/myjs.js"></script>
+    {% block css %}{% endblock %}
 </head>
-<body>
+</bod>
 <nav class="navbar-inverse" role="navigation">
     <div class="row">
         <div class="container navigation">
@@ -57,20 +56,11 @@
         </div>
     </div>
 </nav>
-<div class="container"/>
-<div class="row">
-    <ol class="breadcrumb">
-        <li><a href="#">{{ dict.group }}</a></li>
-        <li><a href="#">{{ dict.date }}</a></li>
-    </ol>
-    <div class="page-header">
-        <h2>{{ dict.title }}
-            <small>{{ dict.comment }}</small>
-        </h2>
-    </div>
-    <div class="article_content">
-        {{ dict.article }}
+<div class="container">
+    <div class="row">
+        {% block block-content %}{% endblock %}
     </div>
 </div>
+{% block js %}{% endblock %}
 </body>
 </html>

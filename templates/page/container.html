@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+{% block css %}
+    <link href="/static/article/css/mystyle.css" rel="stylesheet">
+{% endblock %}
+{% block block-content %}
+    <ol class="breadcrumb">
+        <li><a class="url_param_group">{{ dict.group }}</a></li>
+        <li><a class="url_param_date">{{ dict.date }}</a></li>
+    </ol>
+    <div class="page-header">
+        <h2>{{ dict.title }}
+            <small>{{ dict.comment }}</small>
+        </h2>
+    </div>
+    <div class="article_content">
+        {{ dict.article }}
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="/static/article/js/myjs.js"></script>
+{% endblock %}

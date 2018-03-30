@@ -16,9 +16,10 @@ Including another URLconf
 # from django.contrib import admin
 from django.conf.urls import url
 import xadmin
-from article.views import home
+from article.views import article, catlog
 
 urlpatterns = [
-    url(r'^(\d+)', home),
-    url('^', xadmin.site.urls),
+    url(r'^$', catlog, name='catlog'),
+    url(r'^article/(\d+)', article),
+    url('^admin', xadmin.site.urls),
 ]

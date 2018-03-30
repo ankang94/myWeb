@@ -1,3 +1,11 @@
-.article_content{
+.article_content {
     padding: 10px 10px 20px 10px;
+}
+
+.url_param_group {
+    cursor: pointer;
+}
+
+.url_param_date:hover {
+    cursor: pointer;
 }
