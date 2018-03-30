@@ -6,18 +6,21 @@ from django.db import models
 
 
 class ArticleGroup(models.Model):
-    groupid = models.IntegerField(verbose_name=u'类型Id', primary_key=True)
-    comment = models.CharField(verbose_name=u'注释', max_length=255)
+    groupid = models.IntegerField(verbose_name=u'类型', primary_key=True)
+    comment = models.CharField(verbose_name=u'注释', max_length=255, default='')
 
     class Meta:
         verbose_name = u'文章类型'
         verbose_name_plural = verbose_name
         db_table = u'article_group'
 
+    def __str__(self):
+        return self.comment
+
 
 class Article(models.Model):
     articleid = models.IntegerField(verbose_name=u'文章Id', primary_key=True)
-    groupid = models.ForeignKey(ArticleGroup)
+    group = models.ForeignKey(ArticleGroup, verbose_name=u'类型')
     title = models.CharField(max_length=255, verbose_name=u'标题', default='')
     comment = models.CharField(max_length=255, verbose_name=u'副标题', null=True, blank=True)
     context = models.TextField(verbose_name=u'文章内容', null=True, blank=True)
@@ -27,3 +30,6 @@ class Article(models.Model):
         verbose_name = u'文章库'
         verbose_name_plural = verbose_name
         db_table = u'article'
+
+    def __str__(self):
+        return '{0}({1})'.format(self.title, self.comment)

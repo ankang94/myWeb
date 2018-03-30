@@ -9,7 +9,7 @@ from .models import Article, ArticleGroup
 
 # 基本的修改
 class BaseSetting(object):
-    enable_themes = True   # 打开主题功能
+    enable_themes = True  # 打开主题功能
     use_bootswatch = True  #
 
 
@@ -23,7 +23,9 @@ xadmin.site.register(views.CommAdminView, GlobalSetting)
 
 
 class ArticleAdmin(object):
-    pass
+    list_editable = ['group']
+    list_filter = ('group', 'createdate')
+    search_fields = ('title', 'comment')
 
 
 class ArticleGroupAdmin(object):

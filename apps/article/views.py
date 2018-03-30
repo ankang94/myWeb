@@ -12,6 +12,6 @@ def home(request, param):
     result = {'title': atricle.title,
               'comment': atricle.comment,
               'article': mark_safe(atricle.context),
-              'group': atricle.groupid.comment,
+              'group': atricle.group.comment,
               'date': atricle.createdate}
     return render(request, 'index.html', {'dict': result})
