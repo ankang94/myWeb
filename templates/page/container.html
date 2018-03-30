@@ -5,7 +5,7 @@
 {% block block-content %}
     <ol class="breadcrumb">
         <li><a class="url_param_group">{{ dict.group }}</a></li>
-        <li><a class="url_param_date">{{ dict.date }}</a></li>
+        <li><a class="url_param_date">{{ dict.date|date:'Y-m-d' }}</a></li>
     </ol>
     <div class="page-header">
         <h2>{{ dict.title }}

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from apps.article.models import Article
 from django.utils.safestring import mark_safe
+import datetime
 
 
 # Create your views here.
@@ -18,18 +19,24 @@ def article(request, param):
 
 
 def catlog(request):
-    qryparam = request.GET.get('group')
+    qryparam = request.GET.get('param_group')
     if qryparam is None:
-        qryparam = request.GET.get('date')
-
-    if qryparam is None:
-        qryparam = u'杂记'
+        qryparam = request.GET.get('param_date')
 
     catlist = []
-    if type(qryparam) == str:
-        catlogs = Article.objects.filter(group__comment=qryparam).all()
+
+    if qryparam is None or qryparam == u'所有':
+        qryparam = u'所有'
+        catlogs = Article.objects.all()
     else:
-        catlogs = Article.objects.filter(createdate=qryparam).all()
+        try:
+            qrydate = datetime.datetime.strptime(qryparam, '%Y-%m-%d')
+            catlogs = Article.objects.filter(createdate__year=qrydate.year,
+                                             createdate__month=qrydate.month,
+                                             createdate__day=qrydate.day).all()
+        except:
+            catlogs = Article.objects.filter(group__comment=qryparam).all()
+
     for qrySet in catlogs:
         catlist.append({'title': qrySet.title,
                         'comment': qrySet.comment,
