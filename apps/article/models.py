@@ -7,6 +7,7 @@ from django.db import models
 
 class ArticleGroup(models.Model):
     groupid = models.IntegerField(verbose_name=u'类型', primary_key=True)
+    parentid = models.ForeignKey('self', blank=True, null=True)
     comment = models.CharField(verbose_name=u'注释', max_length=255, default='')
 
     class Meta:

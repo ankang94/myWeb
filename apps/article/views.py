@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from apps.article.models import Article
+from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime
+from .utils import parsetitles, createtabs
 
 
 # Create your views here.
@@ -19,27 +20,30 @@ def article(request, param):
 
 
 def catlog(request):
-    qryparam = request.GET.get('param_group')
-    if qryparam is None:
-        qryparam = request.GET.get('param_date')
+    qrygroup = request.GET.get('group')
+    qrydate = request.GET.get('date')
 
     catlist = []
 
-    if qryparam is None or qryparam == u'所有':
-        qryparam = u'所有'
-        catlogs = Article.objects.all()
+    if qrygroup is None:
+        qrygroup = 0
+    grouoplist = parsetitles(ArticleGroup.objects.all(), qrygroup)
+
+    if qrydate is None:
+        catlogs = Article.objects.filter(group__groupid=qrygroup).all()
     else:
         try:
-            qrydate = datetime.datetime.strptime(qryparam, '%Y-%m-%d')
-            catlogs = Article.objects.filter(createdate__year=qrydate.year,
+            qrydate = datetime.datetime.strptime(qrydate, '%Y-%m-%d')
+            catlogs = Article.objects.filter(group__groupid=qrygroup,
+                                             createdate__year=qrydate.year,
                                              createdate__month=qrydate.month,
                                              createdate__day=qrydate.day).all()
         except:
-            catlogs = Article.objects.filter(group__comment=qryparam).all()
+            catlogs = Article.objects.filter(group__comment=qrygroup).all()
 
     for qrySet in catlogs:
         catlist.append({'title': qrySet.title,
                         'comment': qrySet.comment,
                         'date': qrySet.createdate,
                         'index': qrySet.articleid})
-    return render(request, 'page/catlog.html', {'catlog': catlist, 'group': qryparam})
+    return render(request, 'page/catlog.html', {'catlog': catlist, 'titles': grouoplist})

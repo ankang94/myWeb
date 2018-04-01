@@ -24,23 +24,27 @@
                 </button>
                 <a class="navbar-brand" href="/">安康的Blog</a>
             </div>
-            <ul class="nav navbar-nav navbar-left">
-                <li class="active"><a href="#">JAVA</a></li>
-                <li><a href="#">PYTHON</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        SQL <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">jmeter</a></li>
-                        <li><a href="#">EJB</a></li>
-                        <li><a href="#">Jasper Report</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">分离的链接</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">另一个分离的链接</a></li>
-                    </ul>
-                </li>
+            <ul id="roottitle" class="nav navbar-nav navbar-left">
+                {% for fo in titles %}
+                    {% ifequal fo.type "muilt" %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ fo.comment }} <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for foo in fo.titles %}
+                                    <li><a href="{{ foo.url }}">{{ foo.comment }}</a></li>
+                                {% empty %}
+                                    <li><a>nothing</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="{{ fo.state }}"><a href="{{ fo.url }}">{{ fo.comment }}</a></li>
+                    {% endifequal %}
+                    {% empty %}
+                        <li><a>Nothing</a></li>
+                {% endfor %}
             </ul>
             <form class="navbar-form navbar-right" role="search">
                 <div class="form-group">

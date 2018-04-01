@@ -4,7 +4,10 @@
 {% endblock %}
 {% block block-content %}
     <ol class="breadcrumb">
-        <li><a class="url_param_group">{{ group }}</a></li>
+        <li><span id="roottab">All</span></li>
+        {% for foo in tabs %}
+            <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+        {% endfor %}
     </ol>
     <div class="list-group">
         {% for foo in catlog %}
