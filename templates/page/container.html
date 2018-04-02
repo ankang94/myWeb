@@ -1,6 +1,6 @@
 {% extends 'template.html' %}
 {% block css %}
-    <link href="/static/article/css/mystyle.css" rel="stylesheet">
+
 {% endblock %}
 {% block block-content %}
     <ol class="breadcrumb">
@@ -11,9 +11,9 @@
         {% endfor %}
     </ol>
     <div class="page-header">
-        <h2>{{ dict.title }}
+        <h3>{{ dict.title }}
             <small>{{ dict.comment }}</small>
-        </h2>
+        </h3>
     </div>
     <div class="article_content">
         {{ dict.article }}

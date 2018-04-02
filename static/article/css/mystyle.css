@@ -1,11 +1,25 @@
+body {
+    background: rgba(0, 0, 0, 0) url("/static/media/images/bg.png") repeat scroll center top;
+}
+
+.wrapper-content {
+    background: #fff;
+    box-shadow: 0 1px 3px 0 #b5b5b5;
+    height: 0px;
+    padding-bottom: 100%
+}
+
 .article_content {
     padding: 10px 10px 20px 10px;
 }
 
-.url_param_group {
-    cursor: pointer;
+.footer {
+    border-top: 1px solid #e5e5e5;
+    color: #666;
+    padding: 19px 0;
+    background-color: #2a2730;
 }
 
-.url_param_date:hover {
-    cursor: pointer;
+.footer p, .footer li, .footer h4, .footer a {
+    color: #fff;
 }
