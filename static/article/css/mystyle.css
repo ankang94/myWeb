@@ -1,22 +1,44 @@
 body {
-    background: rgba(0, 0, 0, 0) url("/static/media/images/bg.png") repeat scroll center top;
+    background: #f1f1f1 none repeat scroll 0 0;
 }
 
-.wrapper-content {
-    background: #fff;
+.wrapper-catlog {
+    background: rgba(0, 0, 0, 0) url("/static/media/images/bg.png") repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;
     height: 0px;
     padding-bottom: 100%
 }
 
+.catlog-grid {
+    padding: 0 5px 0 5px;
+}
+
+.wrapper-content {
+    background: #fff repeat scroll center top;
+    box-shadow: 0 1px 3px 0 #b5b5b5;
+    height: 0px;
+    padding-bottom: 100%
+}
+
+.right-bar {
+    background: url("/static/media/images/bar-right.gif");
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    height: 200px;
+}
+
+.page-header {
+    padding-left: 10px;
+}
+
 .article_content {
-    padding: 10px 10px 20px 10px;
+    padding: 0 10px 20px 10px;
 }
 
 .footer {
     border-top: 1px solid #e5e5e5;
     color: #666;
-    padding: 19px 0;
+    padding: 20px 0;
     background-color: #2a2730;
 }
 

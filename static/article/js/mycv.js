@@ -17,7 +17,7 @@ $(function () {
 
     //彩色线条
     function default_color() {
-        // return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
+         // return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
         return Math.ceil(Math.random() * 255) + ',' + Math.ceil(Math.random() * 255) + ',' + Math.ceil(Math.random() * 255);
     }
 
@@ -65,7 +65,7 @@ $(function () {
                     dist < e.max && (e === current_point && dist >= e.max / 2 && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist), //靠近的时候加速
                         d = (e.max - dist) / e.max,
                         context.beginPath(),
-                        context.lineWidth = d / 2,
+                        context.lineWidth = d,
                         context.strokeStyle = "rgba(" + config.c + "," + (d + 0.2) + ")",
                         context.moveTo(r.x, r.y),
                         context.lineTo(e.x, e.y),

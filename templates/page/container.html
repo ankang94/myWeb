@@ -3,20 +3,28 @@
 
 {% endblock %}
 {% block block-content %}
-    <ol class="breadcrumb">
-        {% for foo in tabs %}
-            <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
-        {% empty %}
-            <li><a>Nothing</a></li>
-        {% endfor %}
-    </ol>
-    <div class="page-header">
-        <h3>{{ dict.title }}
-            <small>{{ dict.comment }}</small>
-        </h3>
-    </div>
-    <div class="article_content">
-        {{ dict.article }}
+    <div class="container wrapper-content">
+        <div class="row">
+            <ol class="breadcrumb">
+                {% for foo in tabs %}
+                    {% if forloop.last %}
+                        <li>{{ foo.title }}</li>
+                    {% else %}
+                        <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                    {% endif %}
+                {% empty %}
+                    <li><a>Nothing</a></li>
+                {% endfor %}
+            </ol>
+            <div class="page-header">
+                <h3>{{ dict.title }}
+                    <small>{{ dict.comment }}</small>
+                </h3>
+            </div>
+            <div class="article_content">
+                {{ dict.article }}
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block js %}
