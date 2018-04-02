@@ -4,14 +4,13 @@
 {% endblock %}
 {% block block-content %}
     <ol class="breadcrumb">
-        <li><span id="roottab">All</span></li>
         {% for foo in tabs %}
             <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
         {% endfor %}
     </ol>
     <div class="list-group">
         {% for foo in catlog %}
-            <a href="/article/{{ foo.index }}" class="list-group-item">
+            <a href="{{ foo.url }}" class="list-group-item">
                 <h4 class="list-group-item-heading">{{ foo.title }}
                     <small>{{ foo.comment }}</small>
                 </h4>

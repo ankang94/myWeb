@@ -4,7 +4,6 @@
 {% endblock %}
 {% block block-content %}
     <ol class="breadcrumb">
-        <li><span id="roottab">All</span></li>
         {% for foo in tabs %}
             <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
         {% empty %}

@@ -1,7 +1,6 @@
 # _*_coding:utf-8_*_
 __author__ = 'ankang'
 __date__ = '2018/03/31 21:12'
-import time
 
 
 # common tools for article
@@ -58,8 +57,18 @@ def parsetitles(pset, group):
     return rlist
 
 
-def parsetabs():
-    pass
+def parsetabs(pset, param):
+    tabs = []
+    for item in pset:
+        if item.groupid == int(param.get('groupid')):
+            # find parent node
+            tabs.append({'title': item.comment, 'url': '/g/' + str(item.groupid)})
+            if param.get('date'):
+                datetitle = param.get('date').strftime('%Y-%m-%d')
+                tabs.append({'title': datetitle, 'url': '/g/' + str(item.groupid) + '?d=' + datetitle})
+            if param.get('title'):
+                tabs.append({'title': param.get('title')})
+    return tabs
 
 
 def finditembyid(targetlist, targetid):

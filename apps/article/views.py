@@ -2,25 +2,26 @@ from django.shortcuts import render
 from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime
-from .utils import parsetitles, Cache
+from .utils import parsetitles, Cache, parsetabs
 
 
 # Create your views here.
-def article(request, param):
-    index = 1
-    if param.isdigit():
-        index = param
-    atricle = Article.objects.get(articleid=index)
+def article(request, group, index):
+    if not Cache().get('titles'):
+        Cache('titles', ArticleGroup.objects.all())
+    grouoplist = parsetitles(Cache().get('titles'), int(group))
+    atricle = Article.objects.get(articleid=int(index))
     result = {'title': atricle.title,
               'comment': atricle.comment,
               'article': mark_safe(atricle.context),
-              'group': atricle.group.comment,
+              'groupid': atricle.group.groupid,
               'date': atricle.createdate}
-    return render(request, 'page/container.html', {'dict': result})
+    tabs = parsetabs(Cache().get('titles'), result)
+    return render(request, 'page/container.html', {'dict': result, 'titles': grouoplist, 'tabs': tabs})
 
 
 def catlog(request, qrygroup):
-    qrydate = request.GET.get('date')
+    qrydate = request.GET.get('d')
 
     catlist = []
 
@@ -30,7 +31,7 @@ def catlog(request, qrygroup):
         Cache('titles', ArticleGroup.objects.all())
     grouoplist = parsetitles(Cache().get('titles'), int(qrygroup))
 
-    if qrydate is None:
+    if not qrydate:
         catlogs = Article.objects.filter(group__groupid=qrygroup).all()
     else:
         try:
@@ -46,5 +47,10 @@ def catlog(request, qrygroup):
         catlist.append({'title': qrySet.title,
                         'comment': qrySet.comment,
                         'date': qrySet.createdate,
-                        'index': qrySet.articleid})
-    return render(request, 'page/catlog.html', {'catlog': catlist, 'titles': grouoplist})
+                        'url': '/g/' + str(qrygroup) + '/a/' + str(qrySet.articleid)})
+
+    param = {'groupid': qrygroup}
+    if qrydate:
+        param['date'] = qrydate
+    tabs = parsetabs(Cache().get('titles'), param)
+    return render(request, 'page/catlog.html', {'catlog': catlist, 'titles': grouoplist, 'tabs': tabs})

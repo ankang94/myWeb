@@ -19,7 +19,7 @@ import xadmin
 from article.views import article, catlog
 
 urlpatterns = [
-    url(r'^$|^g/(\d*)', catlog, name='catlog'),
-    url(r'^article/(\d+)', article),
+    url(r'^$|^g/(\d*)$', catlog, name='catlog'),
+    url(r'^g/(\d+)/a/(\d+)', article),
     url('^admin', xadmin.site.urls),
 ]
