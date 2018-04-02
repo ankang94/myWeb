@@ -6,14 +6,25 @@ import time
 
 # common tools for article
 
-def createtabs(pdict):
-    rlist = []
-    if pdict.group.comment is not None:
-        rlist.append({'group': pdict.group.comment,
-                      'url': '/?group=' + pdict.group.groupid})
-    if pdict.createdate is not None:
-        rlist.append({'date': pdict.createdate,
-                      'url': '/?date=' + pdict.createdate.strftime('%Y-%m-%d')})
+class Cache(object):
+    cache = {}
+    _instance = None
+
+    def get(self, key):
+        return self.cache.get(key)
+
+    def remove(self, key):
+        if self.cache.get(key):
+            del self.cache[key]
+
+    def __init__(self, key=None, value=None):
+        if key and value:
+            self.cache[key] = value
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls, *args, **kwargs)
+        return cls._instance
 
 
 def parsetitles(pset, group):
@@ -24,7 +35,7 @@ def parsetitles(pset, group):
                  'groupid': item.groupid,
                  'comment': item.comment,
                  'parentid': item.parentid,
-                 'url': '/?group=' + str(item.groupid)}
+                 'url': '/g/' + str(item.groupid)}
         if item.groupid == group:
             param['state'] = 'active'
         plist.append(param)
@@ -40,6 +51,9 @@ def parsetitles(pset, group):
         if pitem is not None:
             pitem['type'] = 'muilt'
             pitem['titles'].append(item)
+            if item.get('state'):
+                pitem['comment'] = item['comment']
+                pitem['state'] = 'active'
 
     return rlist
 

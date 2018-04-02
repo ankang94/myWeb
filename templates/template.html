@@ -27,7 +27,7 @@
             <ul id="roottitle" class="nav navbar-nav navbar-left">
                 {% for fo in titles %}
                     {% ifequal fo.type "muilt" %}
-                        <li class="dropdown">
+                        <li class="dropdown {{ fo.state }}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 {{ fo.comment }} <b class="caret"></b>
                             </a>

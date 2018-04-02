@@ -2,7 +2,7 @@ from django.shortcuts import render
 from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime
-from .utils import parsetitles, createtabs
+from .utils import parsetitles, Cache
 
 
 # Create your views here.
@@ -19,15 +19,16 @@ def article(request, param):
     return render(request, 'page/container.html', {'dict': result})
 
 
-def catlog(request):
-    qrygroup = request.GET.get('group')
+def catlog(request, qrygroup):
     qrydate = request.GET.get('date')
 
     catlist = []
 
-    if qrygroup is None:
+    if not qrygroup or not qrygroup.strip():
         qrygroup = 0
-    grouoplist = parsetitles(ArticleGroup.objects.all(), qrygroup)
+    if not Cache().get('titles'):
+        Cache('titles', ArticleGroup.objects.all())
+    grouoplist = parsetitles(Cache().get('titles'), int(qrygroup))
 
     if qrydate is None:
         catlogs = Article.objects.filter(group__groupid=qrygroup).all()
