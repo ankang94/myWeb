@@ -22,6 +22,7 @@ class ArticleGroup(models.Model):
 class Script(models.Model):
     name = models.CharField(max_length=40, verbose_name=u'名称', default='')
     path = models.CharField(max_length=255, verbose_name=u'脚本路径', default='')
+    file = models.FilePathField
 
     class Meta:
         verbose_name = u'脚本依赖'
