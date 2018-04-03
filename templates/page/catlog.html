@@ -16,8 +16,10 @@
                         <a class="list-group-item" href="{{ foo.url }}" target="_blank">
                             <h4 class="list-group-item-heading">{{ foo.title }}
                                 <small>{{ foo.comment }}</small>
-                            </h4>
-                            <i class="fa fa-clock-o target-info" aria-hidden="true">{{ foo.date }}</i>
+                            </h4><br>
+                            <div style="width: 100%; text-align: right">
+                                <i class="fa fa-clock-o target-info" aria-hidden="true">{{ foo.date }}</i>
+                            </div>
                         </a>
                     {% endfor %}
                 </div>
