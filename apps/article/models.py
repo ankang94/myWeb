@@ -20,7 +20,7 @@ class ArticleGroup(models.Model):
 
 
 class Article(models.Model):
-    articleid = models.IntegerField(verbose_name=u'文章Id', primary_key=True)
+    articleid = models.AutoField(verbose_name=u'文章Id', primary_key=True)
     group = models.ForeignKey(ArticleGroup, verbose_name=u'类型')
     title = models.CharField(max_length=255, verbose_name=u'标题', default='')
     comment = models.CharField(max_length=255, verbose_name=u'副标题', null=True, blank=True)
