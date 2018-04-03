@@ -11,12 +11,19 @@ def article(request, group, index):
         Cache('titles', ArticleGroup.objects.all())
     grouoplist = parsetitles(Cache().get('titles'), int(group))
     atricle = Article.objects.get(articleid=int(index))
+
     result = {'title': atricle.title,
               'comment': atricle.comment,
               'article': mark_safe(atricle.context),
               'groupid': atricle.group.groupid,
               'date': atricle.createdate}
+
+    scriptlist = []
+    for relas in atricle.script.all():
+        scriptlist.append(mark_safe('<script src="' + relas.path + '"></script>'))
+
     tabs = parsetabs(Cache().get('titles'), result)
+    result['scripts'] = scriptlist
     return render(request, 'page/container.html', {'dict': result, 'titles': grouoplist, 'tabs': tabs})
 
 

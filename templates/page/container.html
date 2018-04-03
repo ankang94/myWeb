@@ -2,6 +2,12 @@
 {% block css %}
 
 {% endblock %}
+{% block js %}
+    {% for script in dict.scripts %}
+        {{ script }}
+    {% endfor %}
+    <script type="text/javascript" src="/static/article/js/container.js"></script>
+{% endblock %}
 {% block block-content %}
     <div class="container wrapper-content">
         <div class="row">
@@ -26,7 +32,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-{% block js %}
-    <script type="text/javascript" src="/static/article/js/myjs.js"></script>
 {% endblock %}

@@ -19,6 +19,19 @@ class ArticleGroup(models.Model):
         return self.comment
 
 
+class Script(models.Model):
+    name = models.CharField(max_length=40, verbose_name=u'名称', default='')
+    path = models.CharField(max_length=255, verbose_name=u'脚本路径', default='')
+
+    class Meta:
+        verbose_name = u'脚本依赖'
+        verbose_name_plural = verbose_name
+        db_table = u'rela_script'
+
+    def __str__(self):
+        return self.name
+
+
 class Article(models.Model):
     articleid = models.AutoField(verbose_name=u'文章Id', primary_key=True)
     group = models.ForeignKey(ArticleGroup, verbose_name=u'类型')
@@ -26,6 +39,7 @@ class Article(models.Model):
     comment = models.CharField(max_length=255, verbose_name=u'副标题', null=True, blank=True)
     context = models.TextField(verbose_name=u'文章内容', null=True, blank=True)
     createdate = models.DateField(max_length=100, verbose_name=u'文章创建日期', auto_now=True)
+    script = models.ManyToManyField(Script, verbose_name=u'需要的脚本', blank=True)
 
     class Meta:
         verbose_name = u'文章库'

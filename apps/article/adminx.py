@@ -4,7 +4,7 @@ __date__ = '2018/03/26 22:29'
 
 import xadmin
 from xadmin import views
-from .models import Article, ArticleGroup
+from .models import Article, ArticleGroup, Script
 
 
 # 基本的修改
@@ -32,5 +32,10 @@ class ArticleGroupAdmin(object):
     pass
 
 
+class ScriptAdmin(object):
+    pass
+
+
 xadmin.site.register(Article, ArticleAdmin)
 xadmin.site.register(ArticleGroup, ArticleGroupAdmin)
+xadmin.site.register(Script, ScriptAdmin)

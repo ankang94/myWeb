@@ -2,6 +2,10 @@
 {% block css %}
 
 {% endblock %}
+{% block js %}
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-paginator.js"></script>
+    <script type="text/javascript" src="/static/article/js/catlog.js"></script>
+{% endblock %}
 {% block block-content %}
     <div class="container wrapper-catlog">
         <div class="row">
@@ -30,8 +34,4 @@
             <ul id="pageLimit"></ul>
         </div>
     </div>
-{% endblock %}
-{% block js %}
-    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-paginator.js"></script>
-    <script type="text/javascript" src="/static/article/js/myjs.js"></script>
 {% endblock %}
