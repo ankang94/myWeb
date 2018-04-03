@@ -17,15 +17,19 @@
                             <h4 class="list-group-item-heading">{{ foo.title }}
                                 <small>{{ foo.comment }}</small>
                             </h4>
-                            <i class="fa fa-clock-o" aria-hidden="true">{{ foo.date }}</i>
+                            <i class="fa fa-clock-o target-info" aria-hidden="true">{{ foo.date }}</i>
                         </a>
                     {% endfor %}
                 </div>
                 <div class="col-md-3 right-bar"></div>
             </div>
         </div>
+        <div id="pagebar" style="text-align: center">
+            <ul id="pageLimit"></ul>
+        </div>
     </div>
 {% endblock %}
 {% block js %}
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-paginator.js"></script>
     <script type="text/javascript" src="/static/article/js/myjs.js"></script>
 {% endblock %}
