@@ -82,13 +82,13 @@ WSGI_APPLICATION = 'myWeb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'an_web',
+        'NAME': 'myweb',
         'USER': 'an',
         'PASSWORD': 'kang',
-        'HOST': '192.168.1.110',
+        'HOST': '10.45.78.58',
         'PORT': '3306',
         'OPTIONS': {
-            # 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
     }
 }
@@ -131,3 +131,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media', 'article')
