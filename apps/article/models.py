@@ -29,14 +29,19 @@ class Script(models.Model):
     class Meta:
         verbose_name = u'脚本'
         verbose_name_plural = verbose_name
-        db_table = u'rela_script'
+        db_table = u'script'
 
     def __str__(self):
         return self.name
 
 
+def upload_to(instance, filename):
+    return '{0}/{1}'.format(instance.article.articleid, filename)
+
+
 class Image(models.Model):
-    path = models.ImageField(upload_to='%Y/%m/%d/', verbose_name=u'图片')
+    article = models.ForeignKey('Article', verbose_name=u'文章')
+    path = models.ImageField(upload_to=upload_to, verbose_name=u'图片')
 
     class Meta:
         verbose_name = u'图片'
@@ -44,7 +49,7 @@ class Image(models.Model):
         db_table = u'images'
 
     def __str__(self):
-        return str(self.path).split('/')[-1]
+        return '{0}[{1}]'.format(str(self.path).split('/')[-1], self.article.title)
 
 
 class Article(models.Model):
@@ -55,7 +60,6 @@ class Article(models.Model):
     context = models.TextField(verbose_name=u'文章内容', null=True, blank=True)
     createdate = models.DateField(max_length=100, verbose_name=u'文章创建日期', auto_now=True)
     script = models.ManyToManyField('Script', verbose_name=u'需要的脚本', blank=True)
-    image = models.ManyToManyField('Image', verbose_name=u'blog图片', blank=True)
 
     class Meta:
         verbose_name = u'文章库'
