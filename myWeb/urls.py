@@ -17,9 +17,11 @@ Including another URLconf
 from django.conf.urls import url
 import xadmin
 from article.views import article, catlog
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     url(r'^$|^g/(\d*)$', catlog, name='catlog'),
     url(r'^g/(\d+)/a/(\d+)', article),
     url('^admin', xadmin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
