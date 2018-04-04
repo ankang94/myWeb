@@ -1,8 +1,5 @@
 {% extends 'template.html' %}
-{% block css %}
-
-{% endblock %}
-{% block js %}
+{% block source %}
     {% for script in dict.scripts %}
         {{ script }}
     {% endfor %}

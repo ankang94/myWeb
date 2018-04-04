@@ -20,7 +20,12 @@ def article(request, group, index):
 
     scriptlist = []
     for relas in atricle.script.all():
-        scriptlist.append(mark_safe('<script src="' + relas.path + '"></script>'))
+        if relas.type == 'C':
+            scriptlist.append(mark_safe('<link href="' + relas.path + '" rel="stylesheet">'))
+        elif relas.type == 'J':
+            scriptlist.append(mark_safe('<script src="' + relas.path + '" charset="UTF-8"></script>'))
+        else:
+            pass
 
     tabs = parsetabs(Cache().get('titles'), result)
     result['scripts'] = scriptlist

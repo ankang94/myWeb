@@ -22,7 +22,7 @@ class ArticleGroup(models.Model):
 class Script(models.Model):
     name = models.CharField(max_length=40, verbose_name=u'名称', default='')
     path = models.CharField(max_length=255, verbose_name=u'脚本路径', default='')
-    file = models.FilePathField
+    type = models.CharField(max_length=2, choices=(('C', u'css脚本'), ('J', u'js脚本')), verbose_name=u'脚本类型', default='')
 
     class Meta:
         verbose_name = u'脚本依赖'
