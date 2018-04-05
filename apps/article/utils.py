@@ -37,7 +37,7 @@ def parsetitles(pset, group):
                  'groupid': item.groupid,
                  'comment': item.comment,
                  'parentid': item.parentid,
-                 'url': '/g/' + str(item.groupid)}
+                 'url': '/g' + str(item.groupid)}
         if item.groupid == group:
             param['state'] = 'active'
         plist.append(param)
@@ -65,10 +65,10 @@ def parsetabs(pset, param):
     for item in pset:
         if item.groupid == int(param.get('groupid')):
             # find parent node
-            tabs.append({'title': item.comment, 'url': '/g/' + str(item.groupid)})
+            tabs.append({'title': item.comment, 'url': '/g' + str(item.groupid)})
             if param.get('date'):
                 datetitle = param.get('date').strftime('%Y-%m-%d')
-                tabs.append({'title': datetitle, 'url': '/g/' + str(item.groupid) + '?d=' + datetitle})
+                tabs.append({'title': datetitle, 'url': '/g' + str(item.groupid) + '?d=' + datetitle})
             if param.get('title'):
                 tabs.append({'title': param.get('title')})
     return tabs

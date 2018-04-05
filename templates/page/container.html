@@ -12,13 +12,12 @@
                         $(this).attr('src', images[$(this).attr('src')]);
                     });
                 }
-            },
-            initializeFile: function() {
-                return;
             }
         });
+        $(function(){
+            $('.article_content').initializeImage();
+        });
     </script>
-    <script type="text/javascript" src="/static/article/js/container.js"></script>
 {% endblock %}
 {% block block-content %}
     <div class="container wrapper-content">

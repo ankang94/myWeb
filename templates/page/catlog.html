@@ -1,7 +1,36 @@
 {% extends 'template.html' %}
 {% block source %}
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap-paginator.js"></script>
-    <script type="text/javascript" src="/static/article/js/catlog.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var pages = {{ pages|safe }};
+            $('#pageLimit').bootstrapPaginator({
+                currentPage: pages.current,
+                totalPages: pages.total,
+                size: "normal",
+                bootstrapMajorVersion: 3,
+                alignment: "right",
+                numberOfPages: pages.total % 20,
+                itemTexts: function (type, page, current) {
+                    switch (type) {
+                        case "first":
+                            return "首页";
+                        case "prev":
+                            return "上一页";
+                        case "next":
+                            return "下一页";
+                        case "last":
+                            return "末页";
+                        case "page":
+                            return page;
+                    }
+                },
+                onPageClicked: function (event, originalEvent, type, page) {
+                    location.href = "/p" + page;
+                }
+            });
+        });
+    </script>
 {% endblock %}
 {% block block-content %}
     <div class="container wrapper-catlog">
