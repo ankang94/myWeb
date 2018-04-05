@@ -1,8 +1,6 @@
 # _*_coding:utf-8_*_
 from django.db import models
-from myWeb import settings
-import os
-
+from .storage import ImageStorage
 
 # Create your models here.
 
@@ -35,13 +33,9 @@ class Script(models.Model):
         return self.name
 
 
-def upload_to(instance, filename):
-    return '{0}/{1}'.format(instance.article.articleid, filename)
-
-
 class Image(models.Model):
-    article = models.ForeignKey('Article', verbose_name=u'文章')
-    path = models.ImageField(upload_to=upload_to, verbose_name=u'图片')
+    name = models.CharField(max_length=255, verbose_name=u'名称')
+    path = models.ImageField(upload_to='img', verbose_name=u'路径', storage=ImageStorage())
 
     class Meta:
         verbose_name = u'图片'
@@ -49,7 +43,7 @@ class Image(models.Model):
         db_table = u'images'
 
     def __str__(self):
-        return '{0}[{1}]'.format(str(self.path).split('/')[-1], self.article.title)
+        return self.name
 
 
 class Article(models.Model):
@@ -60,6 +54,7 @@ class Article(models.Model):
     context = models.TextField(verbose_name=u'文章内容', null=True, blank=True)
     createdate = models.DateField(max_length=100, verbose_name=u'文章创建日期', auto_now=True)
     script = models.ManyToManyField('Script', verbose_name=u'需要的脚本', blank=True)
+    image = models.ManyToManyField('Image', verbose_name=u'需要图片', blank=True)
 
     class Meta:
         verbose_name = u'文章库'

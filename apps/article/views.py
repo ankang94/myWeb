@@ -2,7 +2,7 @@ from django.shortcuts import render
 from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime
-from .utils import parsetitles, Cache, parsetabs
+from .utils import parsetitles, Cache, parsetabs, parsesource
 
 
 # Create your views here.
@@ -10,25 +10,16 @@ def article(request, group, index):
     if not Cache().get('titles'):
         Cache('titles', ArticleGroup.objects.all())
     grouoplist = parsetitles(Cache().get('titles'), int(group))
-    atricle = Article.objects.get(articleid=int(index))
+    articles = Article.objects.get(articleid=int(index))
 
-    result = {'title': atricle.title,
-              'comment': atricle.comment,
-              'article': mark_safe(atricle.context),
-              'groupid': atricle.group.groupid,
-              'date': atricle.createdate}
+    result = {'title': articles.title,
+              'comment': articles.comment,
+              'article': mark_safe(articles.context),
+              'groupid': articles.group.groupid,
+              'date': articles.createdate}
 
-    scriptlist = []
-    for relas in atricle.script.all():
-        if relas.type == 'C':
-            scriptlist.append(mark_safe('<link href="' + relas.path + '" rel="stylesheet">'))
-        elif relas.type == 'J':
-            scriptlist.append(mark_safe('<script src="' + relas.path + '" charset="UTF-8"></script>'))
-        else:
-            pass
-
+    parsesource(articles, result)
     tabs = parsetabs(Cache().get('titles'), result)
-    result['scripts'] = scriptlist
     return render(request, 'page/container.html', {'dict': result, 'titles': grouoplist, 'tabs': tabs})
 
 

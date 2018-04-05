@@ -3,6 +3,21 @@
     {% for script in dict.scripts %}
         {{ script }}
     {% endfor %}
+    <script type="text/javascript">
+        $.fn.extend({
+            initializeImage: function () {
+                var images = {{ dict.image|safe }};
+                if (!$.isEmptyObject(images)) {
+                    $(this).find('img').each(function () {
+                        $(this).attr('src', images[$(this).attr('src')]);
+                    });
+                }
+            },
+            initializeFile: function() {
+                return;
+            }
+        });
+    </script>
     <script type="text/javascript" src="/static/article/js/container.js"></script>
 {% endblock %}
 {% block block-content %}

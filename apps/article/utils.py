@@ -2,6 +2,9 @@
 __author__ = 'ankang'
 __date__ = '2018/03/31 21:12'
 
+from django.utils.safestring import mark_safe
+import json
+
 
 # common tools for article
 
@@ -69,6 +72,25 @@ def parsetabs(pset, param):
             if param.get('title'):
                 tabs.append({'title': param.get('title')})
     return tabs
+
+
+def parsesource(article, result):
+    scriptlist = []
+    for relas in article.script.all():
+        if relas.type == 'C':
+            scriptlist.append(mark_safe('<link href="' + relas.path + '" rel="stylesheet">'))
+        elif relas.type == 'J':
+            scriptlist.append(mark_safe('<script src="' + relas.path + '" charset="UTF-8"></script>'))
+        else:
+            pass
+
+    result['scripts'] = scriptlist
+
+    imageret = {}
+    for relas in article.image.all():
+        imageret[relas.name] = relas.path.url
+
+    result['image'] = json.dumps(imageret)
 
 
 def finditembyid(targetlist, targetid):
