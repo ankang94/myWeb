@@ -3,14 +3,18 @@ from apps.article.models import Article, ArticleGroup
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.safestring import mark_safe
 import datetime, json
-from .utils import parsetitles, Cache, parsetabs, parsesource
+from .utils import parsetitles, Cache, parsetabs, parsesource, generatepage
 
 
 # Create your views here.
-def article(request, gid, aid):
+def gettitle():
     if not Cache().get('titles'):
         Cache('titles', ArticleGroup.objects.all())
-    grouoplist = parsetitles(Cache().get('titles'), int(gid))
+    return Cache().get('titles')
+
+
+def article(request, gid, aid):
+    grouoplist = parsetitles(gettitle(), int(gid))
     articles = Article.objects.get(articleid=int(aid))
 
     result = {'title': articles.title,
@@ -27,15 +31,12 @@ def article(request, gid, aid):
 def catlog(request, gid, pid):
     qrydate = request.GET.get('d')
 
-    catlist = []
-
     if not gid or not gid.strip():
         gid = 0
     if not pid or not pid.strip():
         pid = 1
-    if not Cache().get('titles'):
-        Cache('titles', ArticleGroup.objects.all())
-    grouoplist = parsetitles(Cache().get('titles'), int(gid))
+
+    grouoplist = parsetitles(gettitle(), int(gid))
 
     if not qrydate:
         catlogs = Article.objects.filter(group__groupid=gid).all()
@@ -49,26 +50,31 @@ def catlog(request, gid, pid):
         except:
             catlogs = Article.objects.filter(group__comment=gid).all()
 
-    paginator = Paginator(catlogs, 20)
-
-    try:
-        catlogs = paginator.page(int(pid))
-    except PageNotAnInteger:
-        catlogs = paginator.page(1)
-    except EmptyPage:
-        catlogs = paginator.page(paginator.num_pages)
-
-    pageparam = json.dumps({'current': pid, 'total': paginator.num_pages})
-
-    for qrySet in catlogs:
-        catlist.append({'title': qrySet.title,
-                        'comment': qrySet.comment,
-                        'date': qrySet.createdate,
-                        'url': '/g' + str(gid) + '/a' + str(qrySet.articleid)})
+    ret = generatepage(catlogs, pid)
 
     param = {'groupid': gid}
     if qrydate:
         param['date'] = qrydate
     tabs = parsetabs(Cache().get('titles'), param)
     return render(request, 'page/catlog.html',
-                  {'catlog': catlist, 'titles': grouoplist, 'tabs': tabs, 'pages': pageparam})
+                  {'catlog': ret.get('list'), 'titles': grouoplist, 'tabs': tabs, 'pages': ret.get('page')})
+
+
+def search(request, pid):
+    param = request.GET.get('qrm')
+    if not pid or not pid.strip():
+        pid = 1
+    grouoplist = [{'comment': '搜索', 'state': 'active'}]
+    grouoplist.extend(parsetitles(gettitle()))
+    if not param or not param or not param.strip():
+        return render(request, 'page/catlog.html', {'titles': grouoplist,
+                                                    'qrm': param,
+                                                    'tabs': [{'title': 'Search'}],
+                                                    'pages': json.dumps({'current': 1, 'total': 1})})
+    catlogs = Article.objects.filter(title__icontains=param).all()
+    ret = generatepage(catlogs, pid)
+    return render(request, 'page/catlog.html', {'titles': grouoplist,
+                                                'qrm': param,
+                                                'tabs': [{'title': 'Search'}],
+                                                'catlog': ret.get('list'),
+                                                'pages': ret.get('page')})

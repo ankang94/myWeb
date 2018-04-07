@@ -16,12 +16,13 @@ Including another URLconf
 # from django.contrib import admin
 from django.conf.urls import url
 import xadmin
-from article.views import article, catlog
+from article.views import article, catlog, search
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
     url(r'^(g(?P<gid>\d*)/)?(p(?P<pid>\d*))?$', catlog, name='catlog'),
     url(r'^g(?P<gid>\d+)/a(?P<aid>\d+)', article, name='article'),
+    url(r'^search(/p(?P<pid>\d*))?$', search, name='search'),
     url('^admin', xadmin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

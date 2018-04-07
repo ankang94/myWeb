@@ -3,6 +3,7 @@ __author__ = 'ankang'
 __date__ = '2018/03/31 21:12'
 
 from django.utils.safestring import mark_safe
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 
 
@@ -29,7 +30,7 @@ class Cache(object):
         return cls._instance
 
 
-def parsetitles(pset, group):
+def parsetitles(pset, group=None):
     rlist = []
     plist = []
     for item in pset:
@@ -98,3 +99,25 @@ def finditembyid(targetlist, targetid):
         if item.get('groupid') == targetid:
             return item
     return None
+
+
+def generatepage(catlogs, pid):
+
+    catlist = []
+    paginator = Paginator(catlogs, 20)
+
+    try:
+        catlogs = paginator.page(int(pid))
+    except PageNotAnInteger:
+        catlogs = paginator.page(1)
+    except EmptyPage:
+        catlogs = paginator.page(paginator.num_pages)
+
+    pageparam = json.dumps({'current': pid, 'total': paginator.num_pages})
+
+    for qrySet in catlogs:
+        catlist.append({'title': qrySet.title,
+                        'comment': qrySet.comment,
+                        'date': qrySet.createdate,
+                        'url': '/g' + str(qrySet.group.groupid) + '/a' + str(qrySet.articleid)})
+    return {'list': catlist, 'page': pageparam}
