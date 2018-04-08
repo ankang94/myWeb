@@ -29,6 +29,16 @@
                     location.href = "/p" + page;
                 }
             });
+
+            positionFooter();
+            function positionFooter() {
+                if (($(document.body).height() + $(".footer").height()) < $(window).height()) {
+                    $('.wrapper-catlog').height($(window).height());
+                }
+                $(".footer").css('display', 'block');
+            }
+
+            $(window).scroll(positionFooter).resize(positionFooter);
         });
     </script>
 {% endblock %}
