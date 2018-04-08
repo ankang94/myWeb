@@ -27,8 +27,8 @@ body {
 .wrapper-content {
     background: #fff repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;
-    height: 0px;
-    padding-bottom: 100%
+    /*height: 100%;*/
+    /*padding-bottom: 100%*/
 }
 
 .right-bar {
@@ -52,6 +52,8 @@ body {
     width: 100%;
     padding: 20px 0;
     background-color: #2a2730;
+    position: static;
+    display: none;
 }
 
 .footer p, .footer li, .footer h4, .footer a {

@@ -9,9 +9,33 @@
     <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <script src="/static/jquery/jquery.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/article/js/initialize.js"></script>
     <link href="/static/article/css/mystyle.css" rel="stylesheet">
     {% block source %}{% endblock %}
+    <script type="text/javascript">
+        $.fn.extend({
+            initializeImage: function () {
+                var images = {{ dict.image|safe }};
+                if (!$.isEmptyObject(images)) {
+                    $(this).find('img').each(function () {
+                        $(this).attr('src', images[$(this).attr('src')]);
+                    });
+                }
+            }
+        });
+        $(function () {
+            $('.article_content').initializeImage();
+            positionFooter();
+
+            function positionFooter() {
+                if (($(document.body).height() + $(".footer").height()) < $(window).height()) {
+                    $('.wrapper-content').height($(window).height());
+                }
+                $(".footer").css('display', 'block');
+            }
+
+            $(window).scroll(positionFooter).resize(positionFooter);
+        });
+    </script>
 </head>
 </bod>
 <nav class="navbar-inverse" role="navigation">
