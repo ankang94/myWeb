@@ -21,8 +21,8 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    url(r'^(g(?P<gid>\d*)/)?(p(?P<pid>\d*))?$', catlog, name='catlog'),
-    url(r'^g(?P<gid>\d+)/a(?P<aid>\d+)', article, name='article'),
+    url(r'^(g(?P<gid>\d*)/)?(p(?P<pid>\d*))?$', catlog),
+    url(r'^g(?P<gid>\d+)/a(?P<aid>\d+)', article),
     url(r'^search(/p(?P<pid>\d*))?$', search, name='search'),
     url('^admin', xadmin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
