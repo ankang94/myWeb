@@ -1,6 +1,6 @@
 from django.shortcuts import render
+from django.shortcuts import render_to_response
 from apps.article.models import Article, ArticleGroup
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.safestring import mark_safe
 import datetime, json
 from .utils import parsetitles, Cache, parsetabs, parsesource, generatepage
@@ -78,3 +78,11 @@ def search(request, pid):
                                                 'tabs': [{'title': 'Search'}],
                                                 'catlog': ret.get('list'),
                                                 'pages': ret.get('page')})
+
+
+def page_not_found(request):
+    return render_to_response('page/404.html')
+
+
+def server_inner_error(request):
+    return render_to_response('page/500.html')

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>服务器内部错误</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #b5ccec;
+            z-index: -5;
+        }
+
+        #title {
+            margin: 20px auto;
+            position: fixed;
+            width: 525px;
+            height: 750px;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+            z-index: -1;
+            background-color: white;
+            border: 1px solid gray;
+        }
+
+        .gg {
+            color: red;
+            font-family: 'Simsun';
+        }
+
+        h3 {
+            text-align: right;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<div id="title">
+    <p class="gg" style="font-size: 30px;line-height:3px;font-weight:600;padding: 15px 0 0 0">安康的Blog</p>
+    <p class="gg" style="font-size: 18px;line-height:3px;">The requested URL/500</p>
+    <strong class="gg" style="font-size: 20px;">网页帮助提示[500]</strong>
+    <p class="gg" style="line-height:3px;">====================================================</p>
+    <p style="font-size: 20px;">关于500错误</p>
+    <p style="font-weight: 400;text-align:left;padding:0 25px 0 25px;text-indent:2em;text-align:justify; text-justify:inter-ideograph;">
+        http 500内部服务器（HTTP-Internal Server Error）错误说明IIS服务器无法解析ASP代码，访问一个静态页面试试是否也出现这个问题，如果访问静态页面没问题，那就要分以下几种 情况来分析了： ①
+        你是否改变过计算机名称。 ② 站点所在的文件目录是否自定义了安全属性。 ③ 安装了域控制器后是否调整了域策略。如果是其中的一种情况，请一一将 改变的参数设置回来看是否解决问题。 如果静态空间也无法访问，则说明解析还没生效
+    </p>
+    <br>
+    <br>
+    <br>
+    <p style="font-size: 16px;text-align:right;padding:0 10% 0 0;">Copyright &copy; ankangyun.cn</p>
+</div>
+</body>
+
+</html>

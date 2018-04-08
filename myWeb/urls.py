@@ -16,7 +16,7 @@ Including another URLconf
 # from django.contrib import admin
 from django.conf.urls import url
 import xadmin
-from article.views import article, catlog, search
+from article.views import article, catlog, search, page_not_found, server_inner_error
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -26,3 +26,6 @@ urlpatterns = [
     url(r'^search(/p(?P<pid>\d*))?$', search, name='search'),
     url('^admin', xadmin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = page_not_found
+handler500 = server_inner_error
