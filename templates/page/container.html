@@ -12,10 +12,16 @@
                         $(this).attr('src', images[$(this).attr('src')]);
                     });
                 }
+            },
+            initializeCode: function () {
+                if (typeof prettyPrint == 'function' && $(this).find('pre').length > 0) {
+                    prettyPrint();
+                }
             }
         });
         $(function () {
             $('.article_content').initializeImage();
+            $('.article_content').initializeCode();
             positionFooter();
 
             function positionFooter() {
