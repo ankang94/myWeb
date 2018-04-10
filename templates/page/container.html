@@ -9,7 +9,7 @@
                 var images = {{ dict.image|safe }};
                 if (!$.isEmptyObject(images)) {
                     $(this).find('img').each(function () {
-                        $(this).attr('src', images[$(this).attr('src')]);
+                        $(this).attr('src', images[$(this).attr('alt')]);
                     });
                 }
             },
@@ -22,16 +22,6 @@
         $(function () {
             $('.article_content').initializeImage();
             $('.article_content').initializeCode();
-            positionFooter();
-
-            function positionFooter() {
-                if (($(document.body).height() + $(".footer").height()) < $(window).height()) {
-                    $('.wrapper-content').height($(window).height());
-                }
-                $(".footer").css('display', 'block');
-            }
-
-            $(window).scroll(positionFooter).resize(positionFooter);
         });
     </script>
 {% endblock %}

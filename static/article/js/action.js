@@ -1,10 +1,90 @@
-/**
- * Copyright (c) 2016 hustcc
- * License: MIT
- * Version: %%GULP_INJECT_VERSION%%
- * GitHub: https://github.com/hustcc/canvas-nest.js
- **/
 $(function () {
+    // 目录与内容判断
+    var navigationBar = $('.cl-nav-bar'),
+        navigationFooter = $('.footer'),
+        navigationContent = ($('.wrapper-catlog').length > 0) ? $('.wrapper-catlog') : $('.wrapper-content');
+
+    /* --------------------------------
+
+    1. Footer
+
+    -------------------------------- */
+
+    window.onload = function () {
+        positionFooter();
+
+        function positionFooter() {
+            if ((navigationBar.height() + navigationContent.height() + navigationFooter.height()) < $(window).height()) {
+                navigationContent.height($(window).height());
+            }
+            // 屏蔽反色闪屏
+            navigationFooter.css('display', 'block');
+        }
+
+        $(window).scroll(positionFooter).resize(positionFooter);
+    }
+
+    /* --------------------------------
+
+    2. Float-Nav-Bar
+
+    -------------------------------- */
+    //set scrolling variables
+    var scrolling = false,
+        previousTop = 0,
+        currentTop = 0,
+        scrollDelta = 10,
+        scrollOffset = 150;
+
+
+    $(window).on('scroll', function () {
+        if (!scrolling) {
+            scrolling = true;
+            (!window.requestAnimationFrame) ?
+                setTimeout(autoHideHeader, 250) : requestAnimationFrame(autoHideHeader);
+        }
+    });
+
+    function autoHideHeader() {
+        var currentTop = $(window).scrollTop();
+        checkStickyNavigation(currentTop);
+        previousTop = currentTop;
+        scrolling = false;
+    }
+
+    function checkStickyNavigation(currentTop) {
+        //secondary nav below intro section - sticky secondary nav
+        var secondaryNavOffsetTop = navigationContent.offset().top - navigationBar.height();
+
+        if (previousTop >= currentTop) {
+            //向上滚动
+            if (currentTop < secondaryNavOffsetTop) {
+                navigationBar.removeClass('fixed');
+                navigationContent.removeClass('secondary-nav-fixed');
+            } else if (previousTop - currentTop > scrollDelta) {
+                navigationBar.addClass('fixed');
+                navigationContent.addClass('secondary-nav-fixed');
+            }
+
+        } else {
+            //向下滚动
+            if (currentTop > secondaryNavOffsetTop + scrollOffset) {
+                navigationBar.addClass('fixed');
+                navigationContent.addClass('secondary-nav-fixed');
+            } else if (currentTop > secondaryNavOffsetTop) {
+                navigationBar.addClass('fixed');
+                navigationContent.addClass('secondary-nav-fixed');
+            }
+
+        }
+    }
+
+    /* --------------------------------
+
+    3. Line-To-Line-Cav
+
+    -------------------------------- */
+
     //封装方法，压缩之后减少文件大小
     function get_attribute(node, attr, default_value) {
         return node.getAttribute(attr) || default_value;
@@ -17,7 +97,7 @@ $(function () {
 
     //彩色线条
     function default_color() {
-         // return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
+        // return '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
         return Math.ceil(Math.random() * 255) + ',' + Math.ceil(Math.random() * 255) + ',' + Math.ceil(Math.random() * 255);
     }
 
