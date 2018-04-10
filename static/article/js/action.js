@@ -14,7 +14,7 @@ $(function () {
 
         function positionFooter() {
             if ((navigationBar.height() + navigationContent.height() + navigationFooter.height()) < $(window).height()) {
-                navigationContent.height($(window).height());
+                navigationContent.height(navigationContent.width() * 1.5);
             }
             // 屏蔽反色闪屏
             navigationFooter.css('display', 'block');
