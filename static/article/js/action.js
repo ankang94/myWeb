@@ -13,7 +13,8 @@ $(function () {
         positionFooter();
 
         function positionFooter() {
-            if ((navigationBar.height() + navigationContent.height() + navigationFooter.height()) < $(window).height()) {
+            // A4 size
+            if ((navigationBar.height() + navigationContent.height() + navigationFooter.height()) < navigationContent.width() * 1.5) {
                 navigationContent.height(navigationContent.width() * 1.5);
             }
             // 屏蔽反色闪屏
