@@ -21,7 +21,7 @@ $(function () {
         }
 
         $(window).scroll(positionFooter).resize(positionFooter);
-    }, 200);
+    }, 100);
 
     /* --------------------------------
 
