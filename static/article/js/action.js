@@ -9,8 +9,7 @@ $(function () {
     1. Footer
 
     -------------------------------- */
-
-    window.onload = function () {
+    setTimeout(function () {
         positionFooter();
 
         function positionFooter() {
@@ -22,7 +21,7 @@ $(function () {
         }
 
         $(window).scroll(positionFooter).resize(positionFooter);
-    }
+    }, 200);
 
     /* --------------------------------
 
