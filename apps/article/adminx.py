@@ -26,17 +26,21 @@ class ArticleAdmin(object):
     list_editable = ['group']
     list_filter = ('group', 'createdate')
     search_fields = ('title', 'comment')
+    model_icon = 'fa fa-folder-open'
 
 
 class ArticleGroupAdmin(object):
+    model_icon = 'fa fa-cubes'
     pass
 
 
 class ScriptAdmin(object):
+    model_icon = 'fa fa-file-code-o'
     pass
 
 
 class ImageAdmin(object):
+    model_icon = 'fa fa-file-image-o'
     pass
 
 
