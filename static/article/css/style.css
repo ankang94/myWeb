@@ -5,8 +5,6 @@ body {
 .wrapper-catlog {
     background: rgba(0, 0, 0, 0) url("/static/images/bg.png") repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;
-    /*height: 0px;*/
-    /*padding-bottom: 100%;*/
     position: relative;
 }
 
@@ -27,15 +25,77 @@ body {
 .wrapper-content {
     background: #fff repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;
-    /*height: 100%;*/
-    /*padding-bottom: 100%*/
 }
 
 .right-bar {
-    background: url("/static/images/bar-right.gif");
+    margin: 0;
+    padding: 0;
+}
+
+.right-bar > .right-bar-pic {
+    /*background: url("/static/images/bar-right.gif");*/
+    background: #fff none repeat scroll 0 0;
     border-radius: 4px;
     border: 1px solid #ddd;
-    height: 200px;
+    width: 100%;
+}
+
+.right-bar > .topten {
+    border: 1px solid #ddd;
+    width: 100%;
+    margin: 5px 0;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.ab_title::before {
+    background: #000 none repeat scroll 0 0;
+    bottom: 8px;
+    content: "";
+    height: 2px;
+    left: 0;
+    position: absolute;
+    width: 25%;
+}
+
+.ab_title::after {
+    background: #000 none repeat scroll 0 0;
+    bottom: 8px;
+    content: "";
+    height: 2px;
+    position: absolute;
+    right: 0;
+    width: 25%;
+}
+
+.ab_title {
+    margin: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.topten ul {
+    position: relative;
+    text-align: center;
+    font-size: 18px;
+    color: #1b9dec;
+}
+
+.topten ul li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-bottom: 1px solid #eaeaea;
+    margin: 0 0 10px;
+    padding: 0 0 10px;
+}
+
+.topten ul li h4 b {
+    color: #555;
+}
+
+.topten ul li h4 abbr {
+    color: #096;
 }
 
 .page-header {

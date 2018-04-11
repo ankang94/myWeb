@@ -121,3 +121,15 @@ def generatepage(catlogs, pid):
                         'date': qrySet.createdate,
                         'url': '/g' + str(qrySet.group.groupid) + '/a' + str(qrySet.articleid)})
     return {'list': catlist, 'page': pageparam}
+
+
+def parsetop(pset):
+    tops = []
+    for item in pset:
+        # find parent node
+        tops.append({'title': item.title,
+                     'comment': item.comment,
+                     'date': item.createdate,
+                     'group': item.group.comment,
+                     'url': '/g' + str(item.group.groupid) + '/a' + str(item.articleid)})
+    return tops

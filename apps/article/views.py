@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime, json
-from .utils import parsetitles, Cache, parsetabs, parsesource, generatepage
+from .utils import parsetitles, Cache, parsetabs, parsesource, generatepage, parsetop
 
 
 # Create your views here.
@@ -11,6 +11,12 @@ def gettitle():
     if not Cache().get('titles'):
         Cache('titles', ArticleGroup.objects.all())
     return Cache().get('titles')
+
+
+def gettop():
+    if not Cache().get('tops'):
+        Cache('tops', Article.objects.order_by('-createdate')[0:10])
+    return Cache().get('tops')
 
 
 def article(request, gid, aid):
@@ -55,9 +61,11 @@ def catlog(request, gid, pid):
     param = {'groupid': gid}
     if qrydate:
         param['date'] = qrydate
-    tabs = parsetabs(Cache().get('titles'), param)
+    tabs = parsetabs(gettitle(), param)
+    tops = parsetop(gettop())
     return render(request, 'page/catlog.html',
-                  {'catlog': ret.get('list'), 'titles': grouoplist, 'tabs': tabs, 'pages': ret.get('page')})
+                  {'catlog': ret.get('list'), 'titles': grouoplist, 'top': tops,
+                   'tabs': tabs, 'pages': ret.get('page')})
 
 
 def search(request, pid):
