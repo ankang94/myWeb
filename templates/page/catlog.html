@@ -68,7 +68,7 @@
 {% block block-content %}
     <div class="container wrapper-catlog">
         <div class="row">
-            <ol class="breadcrumb">
+            <ol class="breadcrumb" style="margin-bottom: 5px">
                 {% for foo in tabs %}
                     <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
                 {% endfor %}
@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-md-3 right-bar">
                     <div class="right-bar-pic">
-                        <h2 class="ab_title">广告</h2>
+                        <h2 class="ab_title">广而告之</h2>
                         <img src="/static/images/bar-right.gif" width="100%">
                     </div>
                     <div class="topten">
