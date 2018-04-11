@@ -26,7 +26,7 @@ class ArticleAdmin(object):
     list_editable = ['group']
     list_filter = ('group', 'createdate')
     search_fields = ('title', 'comment')
-    model_icon = 'fa fa-folder-open'
+    model_icon = 'fa fa-hdd-o'
 
 
 class ArticleGroupAdmin(object):
