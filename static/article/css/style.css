@@ -6,6 +6,7 @@ body {
     background: rgba(0, 0, 0, 0) url("/static/images/bg.png") repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;
     position: relative;
+    /*margin-top: 50px;*/
 }
 
 #pagebar {
@@ -31,6 +32,7 @@ body {
 .wrapper-content {
     background: #fff repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;
+    /*margin-top: 50px;*/
 }
 
 .right-bar {
