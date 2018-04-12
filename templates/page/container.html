@@ -1,7 +1,12 @@
 {% extends 'template.html' %}
 {% block source %}
-    {% for script in dict.scripts %}
-        {{ script }}
+    {% load staticfiles %}
+    {% for item in dict.scripts %}
+        {% if item.type == 'J' %}
+            <script type="text/javascript" src="{% static item.url %}" charset="UTF-8"></script>
+        {% elif item.type == 'C' %}
+            <link href="{% static item.url %}" rel="stylesheet">
+        {% endif %}
     {% endfor %}
     <script type="text/javascript">
         $.fn.extend({

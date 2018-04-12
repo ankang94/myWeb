@@ -17,8 +17,12 @@ $(function () {
             if ((navigationBar.height() + navigationContent.height() + navigationFooter.height()) < navigationContent.width() * 1.5) {
                 navigationContent.height(navigationContent.width() * 1.5);
             }
+            if (innerWidth < 450) {
+                $('#pagebar').css('position', 'static');
+            }
             // 屏蔽反色闪屏
             navigationFooter.css('display', 'block');
+            $('#pagebar').css('display', 'block');
         }
 
         $(window).scroll(positionFooter).resize(positionFooter);

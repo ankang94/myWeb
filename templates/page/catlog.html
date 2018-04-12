@@ -1,6 +1,7 @@
 {% extends 'template.html' %}
 {% block source %}
-    <script type="text/javascript" src="/static/bootstrap/js/bootstrap-paginator.js"></script>
+    {% load staticfiles %}
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-paginator.js' %}"></script>
     <script type="text/javascript">
         $(function () {
             var pages = {{ pages|safe }};
@@ -73,7 +74,7 @@
                     <li><a href="{{ foo.url }}">{{ foo.title }}</a></li>
                 {% endfor %}
             </ol>
-            <div class="catlog-grid">
+            <div class="col-md-12 catlog-grid">
                 <div class="list-group col-md-9" style="padding-right:5px">
                     {% for foo in catlog %}
                         <a class="list-group-item" href="{{ foo.url }}" target="_blank">
@@ -109,9 +110,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="pagebar" style="text-align: center">
-            <ul id="pageLimit"></ul>
+            <div id="pagebar">
+                <ul id="pageLimit"></ul>
+            </div>
         </div>
     </div>
 {% endblock %}

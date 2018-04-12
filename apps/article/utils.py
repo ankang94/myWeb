@@ -16,9 +16,12 @@ class Cache(object):
     def get(self, key):
         return self.cache.get(key)
 
-    def remove(self, key):
-        if self.cache.get(key):
-            del self.cache[key]
+    def remove(self, key=None):
+        if key:
+            if self.cache.get(key):
+                del self.cache[key]
+        else:
+            self.cache = {}
 
     def __init__(self, key=None, value=None):
         if key and value:
@@ -78,12 +81,7 @@ def parsetabs(pset, param):
 def parsesource(article, result):
     scriptlist = []
     for relas in article.script.all():
-        if relas.type == 'C':
-            scriptlist.append(mark_safe('<link href="' + relas.path + '" rel="stylesheet">'))
-        elif relas.type == 'J':
-            scriptlist.append(mark_safe('<script src="' + relas.path + '" charset="UTF-8"></script>'))
-        else:
-            pass
+        scriptlist.append({'type': str(relas.type).upper(), 'url': relas.path})
 
     result['scripts'] = scriptlist
 
@@ -102,7 +100,6 @@ def finditembyid(targetlist, targetid):
 
 
 def generatepage(catlogs, pid):
-
     catlist = []
     paginator = Paginator(catlogs, 20)
 

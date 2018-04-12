@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime, json
-from .utils import parsetitles, Cache, parsetabs, parsesource, generatepage, parsetop
+from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage, parsetop
 
 
 # Create your views here.
