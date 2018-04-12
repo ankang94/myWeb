@@ -4,6 +4,8 @@ $(function () {
         navigationFooter = $('.footer'),
         navigationContent = ($('.wrapper-catlog').length > 0) ? $('.wrapper-catlog') : $('.wrapper-content');
 
+    $('.right-bar:first').children('div').not(':first').css('margin', '5px 0');
+
     /* --------------------------------
 
     1. Footer
@@ -58,26 +60,26 @@ $(function () {
 
     function checkStickyNavigation(currentTop) {
         //secondary nav below intro section - sticky secondary nav
-        var secondaryNavOffsetTop = navigationContent.offset().top - navigationBar.height();
+        var navOffsetTop = navigationContent.offset().top - navigationBar.height();
 
         if (previousTop >= currentTop) {
             //向上滚动
-            if (currentTop < secondaryNavOffsetTop) {
+            if (currentTop < navOffsetTop) {
                 navigationBar.removeClass('fixed');
-                navigationContent.removeClass('secondary-nav-fixed');
+                navigationContent.removeClass('wrapper-slide');
             } else if (previousTop - currentTop > scrollDelta) {
                 navigationBar.addClass('fixed');
-                navigationContent.addClass('secondary-nav-fixed');
+                navigationContent.addClass('wrapper-slide');
             }
 
         } else {
             //向下滚动
-            if (currentTop > secondaryNavOffsetTop + scrollOffset) {
+            if (currentTop > navOffsetTop + scrollOffset) {
                 navigationBar.addClass('fixed');
-                navigationContent.addClass('secondary-nav-fixed');
-            } else if (currentTop > secondaryNavOffsetTop) {
+                navigationContent.addClass('wrapper-slide');
+            } else if (currentTop > navOffsetTop) {
                 navigationBar.addClass('fixed');
-                navigationContent.addClass('secondary-nav-fixed');
+                navigationContent.addClass('wrapper-slide');
             }
 
         }

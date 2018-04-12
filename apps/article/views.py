@@ -63,9 +63,11 @@ def catlog(request, gid, pid):
         param['date'] = qrydate
     tabs = parsetabs(gettitle(), param)
     tops = parsetop(gettop())
+    extpic = {'carousel': [{'title': 'test', 'url': '/static/images/headbg.jpg'}],
+              'adpic': [{'title': 'test', 'url': '/static/images/bar-right.gif'}]}
     return render(request, 'page/catlog.html',
                   {'catlog': ret.get('list'), 'titles': grouoplist, 'top': tops,
-                   'tabs': tabs, 'pages': ret.get('page')})
+                   'tabs': tabs, 'pages': ret.get('page'), 'extpic': extpic})
 
 
 def search(request, pid):
