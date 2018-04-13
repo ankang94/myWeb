@@ -65,6 +65,7 @@ class ImageAdmin(object):
 
 class ExtSourceAdmin(object):
     model_icon = 'fa fa-object-group'
+    actions = [DelCacheAction, ]
 
 
 xadmin.site.register(Article, ArticleAdmin)

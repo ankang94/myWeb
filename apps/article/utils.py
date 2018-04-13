@@ -139,5 +139,5 @@ def parseextpic(pset):
             extpic['carousel'].append({'title': item.title, 'url': item.path.url})
     if pset['adpic']:
         for item in pset['adpic']:
-            extpic['carousel'].append({'title': item.title, 'url': item.path.url})
+            extpic['adpic'].append({'title': item.title, 'url': item.path.url})
     return extpic

@@ -36,7 +36,7 @@ class Script(models.Model):
 
 class Image(models.Model):
     name = models.CharField(max_length=255, verbose_name=u'名称')
-    path = models.ImageField(upload_to='img', verbose_name=u'路径', storage=ImageStorage())
+    path = models.ImageField(upload_to='img', verbose_name=u'路径', storage=ImageStorage(), blank=True)
 
     class Meta:
         verbose_name = u'图片'
@@ -68,7 +68,7 @@ class Article(models.Model):
 
 class ExtSource(models.Model):
     title = models.CharField(max_length=255, verbose_name=u'标题')
-    path = models.ImageField(upload_to='ext', verbose_name=u'图片资源')
+    path = models.ImageField(upload_to='ext', verbose_name=u'图片资源', blank=True)
     type = models.CharField(max_length=2, choices=(('CP', u'轮播图'), ('RP', u'右侧图')), verbose_name=u'界面资源')
     state = models.CharField(choices=(('A', u'启用'), ('X', u'未启用')), max_length=1, verbose_name=u'状态')
     seq = models.IntegerField(verbose_name=u'序列', blank=True, null=True)
