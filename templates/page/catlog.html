@@ -44,8 +44,9 @@
                                 <img src="{{ foo.url }}" alt="{{ foo.title }}">
                             </div>
                         {% else %}
-                            <div class="item"></div>
-                            <img src="{{ foo.url }}" alt="{{ foo.title }}">
+                            <div class="item">
+                                <img src="{{ foo.url }}" alt="{{ foo.title }}">
+                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>

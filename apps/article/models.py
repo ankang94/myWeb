@@ -76,7 +76,7 @@ class ExtSource(models.Model):
     class Meta:
         verbose_name = u'目录资源'
         verbose_name_plural = verbose_name
-        ordering = ['-seq']
+        ordering = ['seq']
         db_table = u'ext_source'
 
     def __str__(self):
