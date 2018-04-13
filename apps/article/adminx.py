@@ -6,7 +6,7 @@ import xadmin
 from xadmin import views
 from xadmin.plugins.actions import BaseActionView
 # from django.http import HttpResponse
-from apps.article.models import Article, ArticleGroup, Script, Image
+from apps.article.models import Article, ArticleGroup, Script, Image, ExtSource
 from article.utils import Cache
 
 
@@ -51,7 +51,7 @@ class ArticleAdmin(object):
 
 
 class ArticleGroupAdmin(object):
-    model_icon = 'fa fa-cubes'
+    model_icon = 'fa fa-clone'
     actions = [DelCacheAction, ]
 
 
@@ -63,7 +63,12 @@ class ImageAdmin(object):
     model_icon = 'fa fa-file-image-o'
 
 
+class ExtSourceAdmin(object):
+    model_icon = 'fa fa-object-group'
+
+
 xadmin.site.register(Article, ArticleAdmin)
 xadmin.site.register(ArticleGroup, ArticleGroupAdmin)
 xadmin.site.register(Script, ScriptAdmin)
 xadmin.site.register(Image, ImageAdmin)
+xadmin.site.register(ExtSource, ExtSourceAdmin)

@@ -2,6 +2,7 @@
 from django.db import models
 from .storage import ImageStorage
 
+
 # Create your models here.
 
 
@@ -63,3 +64,20 @@ class Article(models.Model):
 
     def __str__(self):
         return '{0}({1})'.format(self.title, self.comment)
+
+
+class ExtSource(models.Model):
+    title = models.CharField(max_length=255, verbose_name=u'标题')
+    path = models.ImageField(upload_to='ext', verbose_name=u'图片资源')
+    type = models.CharField(max_length=2, choices=(('CP', u'轮播图'), ('RP', u'右侧图')), verbose_name=u'界面资源')
+    state = models.CharField(choices=(('A', u'启用'), ('X', u'未启用')), max_length=1, verbose_name=u'状态')
+    seq = models.IntegerField(verbose_name=u'序列', blank=True, null=True)
+
+    class Meta:
+        verbose_name = u'目录资源'
+        verbose_name_plural = verbose_name
+        ordering = ['-seq']
+        db_table = u'ext_source'
+
+    def __str__(self):
+        return self.title

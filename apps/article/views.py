@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
-from apps.article.models import Article, ArticleGroup
+from apps.article.models import Article, ArticleGroup, ExtSource
 from django.utils.safestring import mark_safe
 import datetime, json
-from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage, parsetop
+from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage, parsetop, parseextpic
 
 
 # Create your views here.
@@ -17,6 +17,14 @@ def gettop():
     if not Cache().get('tops'):
         Cache('tops', Article.objects.order_by('-createdate')[0:10])
     return Cache().get('tops')
+
+
+def getextpic():
+    if not Cache().get('carousel'):
+        Cache('carousel', ExtSource.objects.filter(state='A', type='CP'))
+    if not Cache().get('adpic'):
+        Cache('adpic', ExtSource.objects.filter(state='A', type='RP'))
+    return {'carousel': Cache().get('carousel'), 'adpic': Cache().get('adpic')}
 
 
 def article(request, gid, aid):
@@ -63,8 +71,7 @@ def catlog(request, gid, pid):
         param['date'] = qrydate
     tabs = parsetabs(gettitle(), param)
     tops = parsetop(gettop())
-    extpic = {'carousel': [{'title': 'test', 'url': '/static/images/headbg.jpg'}],
-              'adpic': [{'title': 'test', 'url': '/static/images/bar-right.gif'}]}
+    extpic = parseextpic(getextpic())
     return render(request, 'page/catlog.html',
                   {'catlog': ret.get('list'), 'titles': grouoplist, 'top': tops,
                    'tabs': tabs, 'pages': ret.get('page'), 'extpic': extpic})

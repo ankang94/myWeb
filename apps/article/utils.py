@@ -130,3 +130,12 @@ def parsetop(pset):
                      'group': item.group.comment,
                      'url': '/g' + str(item.group.groupid) + '/a' + str(item.articleid)})
     return tops
+
+
+def parseextpic(pset):
+    extpic = {'carousel': [], 'adpic': []}
+    for item in pset['carousel']:
+        extpic['carousel'].append({'title': item.title, 'url': item.path.url})
+    for item in pset['adpic']:
+        extpic['carousel'].append({'title': item.title, 'url': item.path.url})
+    return extpic
