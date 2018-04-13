@@ -43,6 +43,11 @@ class Image(models.Model):
         verbose_name_plural = verbose_name
         db_table = u'images'
 
+    def getimgname(self):
+        return str(self.path).split('/')[-1]
+
+    getimgname.short_description = u"图片名称"
+
     def __str__(self):
         return self.name
 

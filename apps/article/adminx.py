@@ -2,6 +2,8 @@
 __author__ = 'ankang'
 __date__ = '2018/03/26 22:29'
 
+import os
+from django.conf import settings
 import xadmin
 from xadmin import views
 from xadmin.plugins.actions import BaseActionView
@@ -43,6 +45,7 @@ xadmin.site.register(views.CommAdminView, GlobalSetting)
 
 
 class ArticleAdmin(object):
+    list_display = ['title', 'group', 'comment', 'script', 'image', 'createdate']
     list_editable = ['group']
     list_filter = ('group', 'createdate')
     search_fields = ('title', 'comment')
@@ -51,21 +54,40 @@ class ArticleAdmin(object):
 
 
 class ArticleGroupAdmin(object):
+    list_display = ['groupid', 'comment']
     model_icon = 'fa fa-clone'
     actions = [DelCacheAction, ]
 
 
 class ScriptAdmin(object):
+    list_display = ['name', 'type', 'path']
     model_icon = 'fa fa-file-code-o'
 
 
 class ImageAdmin(object):
+    list_display = ['name', 'getimgname']
     model_icon = 'fa fa-file-image-o'
+
+    def delete_model(self):
+        self.log('delete', '', self.obj)
+        self.obj.delete()
+        file = os.path.join(settings.MEDIA_ROOT, 'img', self.obj.path.url.split('/')[-1])
+        if os.path.exists(file):
+            os.remove(file)
 
 
 class ExtSourceAdmin(object):
+    list_display = ['title', 'type', 'state', 'seq']
     model_icon = 'fa fa-object-group'
+    ordering = ['type', 'seq']
     actions = [DelCacheAction, ]
+
+    def delete_model(self):
+        self.log('delete', '', self.obj)
+        self.obj.delete()
+        file = os.path.join(settings.MEDIA_ROOT, 'ext', self.obj.path.url.split('/')[-1])
+        if os.path.exists(file):
+            os.remove(file)
 
 
 xadmin.site.register(Article, ArticleAdmin)
