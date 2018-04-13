@@ -134,8 +134,10 @@ def parsetop(pset):
 
 def parseextpic(pset):
     extpic = {'carousel': [], 'adpic': []}
-    for item in pset['carousel']:
-        extpic['carousel'].append({'title': item.title, 'url': item.path.url})
-    for item in pset['adpic']:
-        extpic['carousel'].append({'title': item.title, 'url': item.path.url})
+    if pset['carousel']:
+        for item in pset['carousel']:
+            extpic['carousel'].append({'title': item.title, 'url': item.path.url})
+    if pset['adpic']:
+        for item in pset['adpic']:
+            extpic['carousel'].append({'title': item.title, 'url': item.path.url})
     return extpic
