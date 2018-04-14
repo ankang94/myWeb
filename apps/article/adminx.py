@@ -28,7 +28,7 @@ site.register(CommAdminView, GlobalSetting)
 
 class ArticleAdmin(object):
     list_display = ['title', 'group', 'comment', 'script', 'image', 'createdate']
-    list_editable = ['group']
+    list_editable = ['title', 'group', 'comment']
     list_filter = ('group', 'createdate')
     search_fields = ('title', 'comment')
     model_icon = 'fa fa-hdd-o'
@@ -36,16 +36,21 @@ class ArticleAdmin(object):
 
 class ArticleGroupAdmin(object):
     list_display = ['groupid', 'comment']
+    list_editable = ['comment']
+    list_filter = ('parentid',)
     model_icon = 'fa fa-clone'
 
 
 class ScriptAdmin(object):
     list_display = ['name', 'type', 'path']
+    list_editable = ['name', 'type', 'path']
+    list_filter = ('type',)
     model_icon = 'fa fa-file-code-o'
 
 
 class ImageAdmin(object):
     list_display = ['name', 'rel_img_name', 'path']
+    list_editable = ['name']
     model_icon = 'fa fa-file-image-o'
 
     def delete_model(self):
@@ -58,6 +63,8 @@ class ImageAdmin(object):
 
 class ExtSourceAdmin(object):
     list_display = ['title', 'rel_img_name', 'type', 'state', 'seq']
+    list_editable = ['title', 'type', 'state', 'seq']
+    list_filter = ('type', 'state')
     model_icon = 'fa fa-object-group'
     ordering = ['type', 'seq']
 
