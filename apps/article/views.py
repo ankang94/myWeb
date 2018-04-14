@@ -90,11 +90,14 @@ def search(request, pid):
                                                     'pages': json.dumps({'current': 1, 'total': 1})})
     catlogs = Article.objects.filter(title__icontains=param).all()
     ret = generatepage(catlogs, pid)
+    tops = parsetop(gettop())
+    extpic = parseextpic(getextpic())
     return render(request, 'page/catlog.html', {'titles': grouoplist,
                                                 'qrm': param,
                                                 'tabs': [{'title': 'Search'}],
                                                 'catlog': ret.get('list'),
-                                                'pages': ret.get('page')})
+                                                'pages': ret.get('page'),
+                                                'top': tops, 'extpic': extpic})
 
 
 def page_not_found(request):
