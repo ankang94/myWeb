@@ -4,17 +4,17 @@ __date__ = '2018/03/26 22:29'
 
 import os
 from django.conf import settings
-import xadmin
-from xadmin import views
+from xadmin.sites import site
+from xadmin.views import BaseAdminView, CommAdminView
 from apps.article.models import Article, ArticleGroup, Script, Image, ExtSource
-from xadmin.views import ListAdminView
-from .xplugin import CachePlugin
+from .xplugin import RefreshButton, RefreshPlugin
 
 
 # 基本的修改
 class BaseSetting(object):
     enable_themes = True  # 打开主题功能
     use_bootswatch = True  #
+    refresh_cache_plugin = True
 
 
 class GlobalSetting(object):
@@ -22,8 +22,8 @@ class GlobalSetting(object):
     site_footer = u'安康云'
 
 
-xadmin.site.register(views.BaseAdminView, BaseSetting)
-xadmin.site.register(views.CommAdminView, GlobalSetting)
+site.register(BaseAdminView, BaseSetting)
+site.register(CommAdminView, GlobalSetting)
 
 
 class ArticleAdmin(object):
@@ -37,7 +37,6 @@ class ArticleAdmin(object):
 class ArticleGroupAdmin(object):
     list_display = ['groupid', 'comment']
     model_icon = 'fa fa-clone'
-    refresh_cache_plugin = True
 
 
 class ScriptAdmin(object):
@@ -61,7 +60,6 @@ class ExtSourceAdmin(object):
     list_display = ['title', 'rel_img_name', 'type', 'state', 'seq']
     model_icon = 'fa fa-object-group'
     ordering = ['type', 'seq']
-    refresh_cache_plugin = True
 
     def delete_model(self):
         self.log('delete', '', self.obj)
@@ -71,10 +69,11 @@ class ExtSourceAdmin(object):
             os.remove(file)
 
 
-xadmin.site.register(Article, ArticleAdmin)
-xadmin.site.register(ArticleGroup, ArticleGroupAdmin)
-xadmin.site.register(Script, ScriptAdmin)
-xadmin.site.register(Image, ImageAdmin)
-xadmin.site.register(ExtSource, ExtSourceAdmin)
+site.register(Article, ArticleAdmin)
+site.register(ArticleGroup, ArticleGroupAdmin)
+site.register(Script, ScriptAdmin)
+site.register(Image, ImageAdmin)
+site.register(ExtSource, ExtSourceAdmin)
 
-xadmin.site.register_plugin(CachePlugin, ListAdminView)
+site.register_plugin(RefreshButton, BaseAdminView)
+site.register_plugin(RefreshPlugin, BaseAdminView)

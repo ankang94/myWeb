@@ -2,9 +2,8 @@
 __author__ = 'ankang'
 __date__ = '2018/03/31 21:12'
 
-from django.utils.safestring import mark_safe
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 # common tools for article
