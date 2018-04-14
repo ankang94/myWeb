@@ -33,5 +33,5 @@ class RefreshPlugin(BaseAdminPlugin):
                             '2': 'carousel',
                             '3': 'adpic',
                             '4': 'tops',
-                            '5': None}.get(data, data))
+                            '5': None}.get(data))
         return False
