@@ -15,7 +15,7 @@ def gettitle():
 
 def gettop():
     if not Cache().get('tops'):
-        Cache('tops', Article.objects.order_by('-createdate')[0:10])
+        Cache('tops', Article.objects.order_by('-createdate', '-articleid')[:10])
     return Cache().get('tops')
 
 
