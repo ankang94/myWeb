@@ -51,6 +51,7 @@ class ScriptAdmin(object):
 class ImageAdmin(object):
     list_display = ['name', 'rel_img_name', 'path']
     list_editable = ['name']
+    search_fields = ('name',)
     model_icon = 'fa fa-file-image-o'
 
     def delete_model(self):
