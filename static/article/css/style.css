@@ -2,6 +2,10 @@ body {
     background: #f1f1f1 none repeat scroll 0 0;
 }
 
+.form-control-feedback {
+    right: 30px;
+}
+
 .wrapper-catlog {
     background: rgba(0, 0, 0, 0) url("/static/base/bg.png") repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;

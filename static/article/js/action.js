@@ -6,6 +6,24 @@ $(function () {
 
     $('.right-bar:first').children('div').not(':first').css('margin', '5px 0');
 
+    $('#searchbar').bootstrapValidator({
+        container: 'popover',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            qrm: {
+                validators: {
+                    notEmpty: {
+                        message: '请输入关键词'
+                    }
+                }
+            }
+        }
+    });
+
     /* --------------------------------
 
     1. Footer
