@@ -83,15 +83,17 @@ def search(request, pid):
         pid = 1
     grouoplist = [{'comment': '搜索', 'state': 'active'}]
     grouoplist.extend(parsetitles(gettitle()))
+    tops = parsetop(gettop())
+    extpic = parseextpic(getextpic())
     if not param or not param or not param.strip():
         return render(request, 'page/catlog.html', {'titles': grouoplist,
                                                     'qrm': param,
                                                     'tabs': [{'title': 'Search'}],
-                                                    'pages': json.dumps({'current': 1, 'total': 1})})
+                                                    'pages': json.dumps({'current': 1, 'total': 1}),
+                                                    'top': tops, 'extpic': extpic})
     catlogs = Article.objects.filter(title__icontains=param).all()
     ret = generatepage(catlogs, pid)
-    tops = parsetop(gettop())
-    extpic = parseextpic(getextpic())
+
     return render(request, 'page/catlog.html', {'titles': grouoplist,
                                                 'qrm': param,
                                                 'tabs': [{'title': 'Search'}],
