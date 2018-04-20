@@ -1,0 +1,21 @@
+<nav aria-label="breadcrumb">
+    <div class="row">
+        <ol class="breadcrumb col-12" style="padding: 0.5rem 0.75rem; margin-bottom: 0.3rem; border-radius: 0">
+            {% ifequal page_type 'C' %}
+                {% for foo in tabs %}
+                    <li class="breadcrumb-item"><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                {% endfor %}
+            {% else %}
+                {% for foo in tabs %}
+                    {% if forloop.last %}
+                        <li class="breadcrumb-item active" aria-current="page">{{ foo.title }}</li>
+                    {% else %}
+                        <li class="breadcrumb-item"><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                    {% endif %}
+                {% empty %}
+                    <li class="breadcrumb-item active" aria-current="page"><a>Nothing</a></li>
+                {% endfor %}
+            {% endifequal %}
+        </ol>
+    </div>
+</nav>

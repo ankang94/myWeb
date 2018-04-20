@@ -1,0 +1,30 @@
+<div class="col-lg-3 right-bar">
+    {% if adpic %}
+        <div class="right-bar-pic">
+            <h3 class="ab_title">广而告之</h3>
+            {% for foo in adpic %}
+                <img src="{{ foo.url }}" alt="{{ foo.title }}" width="100%">
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="topten">
+        <h3 class="ab_title">最近更新</h3>
+        <ul class="tags_group">
+            {% for foo in top %}
+                <li><a href={{ foo.url }}>
+                    <div class="row" style="margin:0 0 -0.8rem 0; width: 100%; padding: 0 0.2rem">
+                        <h5 class="tags col-9" style="text-align: left; padding-left: 0">
+                            <b class="circle1">{{ forloop.counter }}</b> {{ foo.title }}
+                            <small>({{ foo.comment }})</small>
+                        </h5>
+                        <label class="col-3" style="text-align: center">
+                            <abbr title="创建日期：{{ foo.date }}" class="initialism">{{ foo.group }}</abbr>
+                        </label>
+                    </div>
+                </a></li>
+            {% empty %}
+                <li><b>Nothing</b></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
