@@ -6,24 +6,6 @@ $(function () {
 
     $('.right-bar:first').children('div').not(':first').css('margin', '5px 0');
 
-    $('#searchbar').bootstrapValidator({
-        container: 'popover',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            qrm: {
-                validators: {
-                    notEmpty: {
-                        message: '请输入关键词'
-                    }
-                }
-            }
-        }
-    });
-
     /* --------------------------------
 
     1. Footer
@@ -56,9 +38,7 @@ $(function () {
     //set scrolling variables
     var scrolling = false,
         previousTop = 0,
-        currentTop = 0,
-        scrollDelta = 10,
-        scrollOffset = 150;
+        scrollDelta = 10;
 
 
     $(window).on('scroll', function () {
@@ -78,24 +58,21 @@ $(function () {
 
     function checkStickyNavigation(currentTop) {
         //secondary nav below intro section - sticky secondary nav
-        var navOffsetTop = navigationContent.offset().top - navigationBar.height();
+        var navOffsetTop = navigationContent.offset().top - navigationBar.outerHeight();
 
         if (previousTop >= currentTop) {
             //向上滚动
             if (currentTop < navOffsetTop) {
-                navigationBar.removeClass('fixed');
                 navigationContent.removeClass('wrapper-slide');
+                navigationBar.removeClass('fixed');
             } else if (previousTop - currentTop > scrollDelta) {
-                navigationBar.addClass('fixed');
                 navigationContent.addClass('wrapper-slide');
+                navigationBar.addClass('fixed');
             }
 
         } else {
             //向下滚动
-            if (currentTop > navOffsetTop + scrollOffset) {
-                navigationBar.addClass('fixed');
-                navigationContent.addClass('wrapper-slide');
-            } else if (currentTop > navOffsetTop) {
+            if (currentTop > navOffsetTop) {
                 navigationBar.addClass('fixed');
                 navigationContent.addClass('wrapper-slide');
             }

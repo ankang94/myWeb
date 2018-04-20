@@ -1,9 +1,8 @@
 from django.shortcuts import render
-from django.shortcuts import render_to_response
 from apps.article.models import Article, ArticleGroup, ExtSource
 from django.utils.safestring import mark_safe
 import datetime, json
-from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage, parsetop, parseextpic
+from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage
 
 
 # Create your views here.
@@ -70,11 +69,9 @@ def catlog(request, gid, pid):
     if qrydate:
         param['date'] = qrydate
     tabs = parsetabs(gettitle(), param)
-    tops = parsetop(gettop())
-    extpic = parseextpic(getextpic())
     return render(request, 'page/catlog.html',
-                  {'catlog': ret.get('list'), 'titles': grouoplist, 'top': tops,
-                   'tabs': tabs, 'pages': ret.get('page'), 'extpic': extpic})
+                  {'catlog': ret.get('list'), 'titles': grouoplist,
+                   'tabs': tabs, 'pages': ret.get('page')})
 
 
 def search(request, pid):
@@ -83,14 +80,11 @@ def search(request, pid):
         pid = 1
     grouoplist = [{'comment': '搜索', 'state': 'active'}]
     grouoplist.extend(parsetitles(gettitle()))
-    tops = parsetop(gettop())
-    extpic = parseextpic(getextpic())
     if not param or not param or not param.strip():
         return render(request, 'page/catlog.html', {'titles': grouoplist,
                                                     'qrm': param,
                                                     'tabs': [{'title': 'Search'}],
-                                                    'pages': json.dumps({'current': 1, 'total': 1}),
-                                                    'top': tops, 'extpic': extpic})
+                                                    'pages': json.dumps({'current': 1, 'total': 1})})
     catlogs = Article.objects.filter(title__icontains=param).all()
     ret = generatepage(catlogs, pid)
 
@@ -98,13 +92,4 @@ def search(request, pid):
                                                 'qrm': param,
                                                 'tabs': [{'title': 'Search'}],
                                                 'catlog': ret.get('list'),
-                                                'pages': ret.get('page'),
-                                                'top': tops, 'extpic': extpic})
-
-
-def page_not_found(request):
-    return render_to_response('page/404.html')
-
-
-def server_inner_error(request):
-    return render_to_response('page/500.html')
+                                                'pages': ret.get('page')})

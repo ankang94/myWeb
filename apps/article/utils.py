@@ -117,26 +117,3 @@ def generatepage(catlogs, pid):
                         'date': qrySet.createdate,
                         'url': '/g' + str(qrySet.group.groupid) + '/a' + str(qrySet.articleid)})
     return {'list': catlist, 'page': pageparam}
-
-
-def parsetop(pset):
-    tops = []
-    for item in pset:
-        # find parent node
-        tops.append({'title': item.title,
-                     'comment': item.comment,
-                     'date': item.createdate,
-                     'group': item.group.comment,
-                     'url': '/g' + str(item.group.groupid) + '/a' + str(item.articleid)})
-    return tops
-
-
-def parseextpic(pset):
-    extpic = {'carousel': [], 'adpic': []}
-    if pset['carousel']:
-        for item in pset['carousel']:
-            extpic['carousel'].append({'title': item.title, 'url': item.path.url})
-    if pset['adpic']:
-        for item in pset['adpic']:
-            extpic['adpic'].append({'title': item.title, 'url': item.path.url})
-    return extpic

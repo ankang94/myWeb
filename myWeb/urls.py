@@ -13,17 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# from django.contrib import admin
-from django.conf.urls import url
-import xadmin
-from article.views import article, catlog, search, page_not_found, server_inner_error
+from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.conf import settings
+from .views import page_not_found, server_inner_error
+import xadmin
 
 urlpatterns = [
-    url(r'^(g(?P<gid>\d*)/)?(p(?P<pid>\d*))?$', catlog),
-    url(r'^g(?P<gid>\d+)/a(?P<aid>\d+)', article),
-    url(r'^search(/p(?P<pid>\d*))?$', search, name='search'),
+    url('', include('article.urls', namespace='article')),
     url('^admin', xadmin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
