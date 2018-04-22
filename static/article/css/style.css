@@ -324,7 +324,6 @@ h2.title-nav {
     font-size: 1.3em;
     margin: 10px 0 10px 0;
     padding: 0 10px;
-    /*border-left: 5px solid #20c997;*/
     background-color: #f7f7f7;
     line-height: 2em;
 }
@@ -332,6 +331,11 @@ h2.title-nav {
 h3.title-nav {
     font-weight: 600;
     font-size: 1.2em;
+}
+
+.article-nav-list ul a::before {
+    content: '-';
+    color: #fff;
 }
 
 .article-nav-list ul ul a::before {
