@@ -26,7 +26,9 @@
                 }
             },
             initializeNav: function (select) {
-                var lastElm;
+                var lastElm,
+                    speedstep = .05,
+                    colorbang = ['#f1c40f', '#c0392b', '#e67e22', '#2ecc71', '#3498db'];
                 $(this).find('*').each(function (index, element) {
                     var tagetT = $(element).get(0).tagName.substr(0, 2).toUpperCase();
                     if (tagetT == 'H2' || tagetT == 'H3') {
@@ -35,19 +37,23 @@
                         var markid = "M-" + $(element).get(0).tagName + "-" + index.toString();
                         $(this).attr('id', markid);
                         if (tagetT.substr(1, 2) == '2') {
+                            var curcol = colorbang.pop();
+                            $(element).css('border-left', '5px solid ' + curcol);
                             if ($(select).children('ul').length == 0) {
                                 $(select).append(document.createElement('ul'));
                             }
                             var h2ele = $(select).children('ul').get(0);
-                            $(h2ele).append("<li><a href='#" + markid + "'>" + contentH + "</a></li>");
-                            lastElm = $(h2ele).children('li').get($(h2ele).children('li').length - 1)
+                            $(h2ele).append("<li class='bookmark' style='transition-delay: " + speedstep + "s;'><a href='#" + markid + "' style='border-right: 5px solid " + curcol + ";'>" + contentH + "</a></li>");
+                            lastElm = $(h2ele).children('li').get($(h2ele).children('li').length - 1);
+                            speedstep = speedstep + .05;
                         } else {
                             if (lastElm) {
                                 if ($(lastElm).children('ul').length == 0) {
                                     $(lastElm).append(document.createElement('ul'));
                                 }
                                 var h3ele = $(lastElm).children('ul').get(0);
-                                $(h3ele).append("<li><a href='#" + markid + "'>" + contentH + "</a></li>");
+                                $(h3ele).append("<li class='bookmark' style='transition-delay: " + speedstep + "s;'><a href='#" + markid + "' style='border-right: 3px solid #2c3e50;'>" + contentH + "</a></li>");
+                                speedstep = speedstep + .05;
                             }
                         }
                     }
@@ -61,6 +67,11 @@
                             scrollTop: $($.attr(this, 'href')).offset().top - 56
                         }, 500);
                         return false;
+                    });
+                    $('.bookmark').hover(function () {
+                        $('.bookmark').css('width', '150px');
+                    }, function () {
+                        $('.bookmark').css('width', '20px');
                     });
                 }
             }
