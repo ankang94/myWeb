@@ -14,9 +14,10 @@ def gettitle():
 
 
 def article(request, gid, aid):
-    grouoplist = parsetitles(gettitle(), int(gid))
-    articles = Article.objects.get(articleid=int(aid))
-    if not articles:
+    try:
+        grouoplist = parsetitles(gettitle(), int(gid))
+        articles = Article.objects.get(articleid=int(aid))
+    except (ValueError, Article.DoesNotExist):
         return render_to_response('404.html')
 
     cd = articles.createdate.strftime("%Y%m%d%H%M%S")
@@ -48,7 +49,10 @@ def catlog(request, gid, pid):
     if not pid or not pid.strip():
         pid = 1
 
-    grouoplist = parsetitles(gettitle(), int(gid))
+    try:
+        grouoplist = parsetitles(gettitle(), int(gid))
+    except ValueError:
+        return render_to_response('404.html')
 
     if not qrydate:
         catlogs = Article.objects.filter(group__groupid=gid).all()

@@ -38,6 +38,7 @@ class Cache(object):
 def parsetitles(pset, group=None):
     rlist = []
     plist = []
+    raise_flag = True if group else False
     for item in pset:
         param = {'titles': [],
                  'groupid': item.groupid,
@@ -46,7 +47,11 @@ def parsetitles(pset, group=None):
                  'url': '/g' + str(item.groupid)}
         if item.groupid == group:
             param['state'] = 'active'
+            raise_flag = False
         plist.append(param)
+
+    if raise_flag:
+        raise ValueError
 
     for item in plist:
         if item.get('parentid') is None:
