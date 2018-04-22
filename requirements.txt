@@ -3,6 +3,7 @@ Django==1.11
 django-crispy-forms==1.7.2
 django-formtools==2.1
 django-import-export==1.0.0
+django-redis==4.9.0
 django-reversion==2.0.13
 et-xmlfile==1.0.1
 future==0.16.0
@@ -13,7 +14,8 @@ openpyxl==2.5.1
 Pillow==5.1.0
 PyMySQL==0.8.0
 pytz==2018.3
-pyyaml==3.12
+PyYAML==3.12
+redis==2.10.6
 selenium==3.11.0
 six==1.11.0
 tablib==0.12.1
