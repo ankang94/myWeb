@@ -3,7 +3,7 @@ __author__ = 'ankang'
 __date__ = '2018/03/31 21:12'
 
 import json
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator
 
 
 # common tools for article
@@ -109,13 +109,7 @@ def finditembyid(targetlist, targetid):
 def generatepage(catlogs, pid):
     catlist = []
     paginator = Paginator(catlogs, 20)
-
-    try:
-        catlogs = paginator.page(int(pid))
-    except PageNotAnInteger:
-        catlogs = paginator.page(1)
-    except EmptyPage:
-        catlogs = paginator.page(paginator.num_pages)
+    catlogs = paginator.page(int(pid))
 
     pageparam = json.dumps({'current': pid, 'total': paginator.num_pages})
 

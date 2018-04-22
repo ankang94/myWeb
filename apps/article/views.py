@@ -2,8 +2,9 @@ from django.shortcuts import render
 from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime, json
-from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage
 from django.shortcuts import render_to_response
+from django.core.paginator import EmptyPage, PageNotAnInteger
+from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage
 
 
 # Create your views here.
@@ -66,7 +67,10 @@ def catlog(request, gid, pid):
         except ValueError:
             catlogs = Article.objects.filter(group__comment=gid).all()
 
-    ret = generatepage(catlogs, pid)
+    try:
+        ret = generatepage(catlogs, pid)
+    except (PageNotAnInteger, EmptyPage):
+        return render_to_response('404.html')
 
     param = {'groupid': gid}
     if qrydate:
@@ -89,7 +93,10 @@ def search(request, pid):
                                                     'tabs': [{'title': 'Search'}],
                                                     'pages': json.dumps({'current': 1, 'total': 1})})
     catlogs = Article.objects.filter(title__icontains=param).all()
-    ret = generatepage(catlogs, pid)
+    try:
+        ret = generatepage(catlogs, pid)
+    except (PageNotAnInteger, EmptyPage):
+        return render_to_response('404.html')
 
     return render(request, 'page/catlog.html', {'titles': grouoplist,
                                                 'qrm': param,
