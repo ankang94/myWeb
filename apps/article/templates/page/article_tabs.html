@@ -1,19 +1,30 @@
 <nav aria-label="breadcrumb">
     <div class="row">
-        <ol class="breadcrumb col-12" style="padding: 0.5rem 0.75rem; margin-bottom: 0.3rem; border-radius: 0">
+        <ol class="breadcrumb col-12 mb-2 py-2"
+            style="padding: 0.5rem 0.75rem; margin-bottom: 0.3rem; border-radius: 0; border-bottom: 1px solid #cecece">
             {% ifequal page_type 'C' %}
                 {% for foo in tabs %}
-                    <li class="breadcrumb-item"><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                    {% if forloop.first %}
+                        <li class="breadcrumb-item"><i class="fa fa-home mr-1"></i><a
+                                href="{{ foo.url }}">{{ foo.title }}</a></li>
+                    {% else %}
+                        <li class="breadcrumb-item"><a href="{{ foo.url }}">{{ foo.title }}</a></li>
+                    {% endif %}
                 {% endfor %}
             {% else %}
                 {% for foo in tabs %}
-                    {% if forloop.last %}
+                    {% if forloop.first %}
+                        <li class="breadcrumb-item"><i class="fa fa-home mr-1"></i><a
+                                href="{{ foo.url }}">{{ foo.title }}</a></li>
+                    {% elif forloop.last %}
                         <li class="breadcrumb-item active" aria-current="page">{{ foo.title }}</li>
                     {% else %}
                         <li class="breadcrumb-item"><a href="{{ foo.url }}">{{ foo.title }}</a></li>
                     {% endif %}
                 {% empty %}
-                    <li class="breadcrumb-item active" aria-current="page"><a>Nothing</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fa fa-bars mr-1"></i><a>Nothing</a>
+                    </li>
                 {% endfor %}
             {% endifequal %}
         </ol>

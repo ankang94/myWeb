@@ -9,7 +9,10 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # common tools for article
 
 class Cache(object):
-    cache = {}
+    from django.core.cache import cache as redis_cache
+    from django_redis import get_redis_connection
+    cache = redis_cache
+    clear_redis = get_redis_connection("default")
     _instance = None
 
     def get(self, key):
@@ -17,14 +20,14 @@ class Cache(object):
 
     def remove(self, key=None):
         if key:
-            if self.cache.get(key):
-                del self.cache[key]
+            if self.cache.keys(key):
+                self.cache.delete_pattern(key)
         else:
-            self.cache = {}
+            self.clear_redis.flushall()
 
-    def __init__(self, key=None, value=None):
+    def __init__(self, key=None, value=None, timeout=None):
         if key and value:
-            self.cache[key] = value
+            self.cache.set(key, value, timeout)
 
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -113,7 +116,9 @@ def generatepage(catlogs, pid):
 
     for qrySet in catlogs:
         catlist.append({'title': qrySet.title,
+                        'timg': qrySet.timg.url if qrySet.timg and hasattr(qrySet.timg, 'url') else None,
                         'comment': qrySet.comment,
+                        'summary': qrySet.summary,
                         'date': qrySet.createdate,
                         'url': '/g' + str(qrySet.group.groupid) + '/a' + str(qrySet.articleid)})
     return {'list': catlist, 'page': pageparam}

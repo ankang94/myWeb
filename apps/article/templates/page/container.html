@@ -15,6 +15,7 @@
                 var images = {{ dict.image|safe }};
                 if (!$.isEmptyObject(images)) {
                     $(this).find('img').each(function () {
+                        $(this).addClass('img-fluid');
                         $(this).attr('src', images[$(this).attr('alt')]);
                     });
                 }
@@ -23,11 +24,51 @@
                 if (typeof prettyPrint == 'function' && $(this).find('pre').length > 0) {
                     prettyPrint();
                 }
+            },
+            initializeNav: function (select) {
+                var lastElm;
+                $(this).find('*').each(function (index, element) {
+                    var tagetT = $(element).get(0).tagName.substr(0, 2).toUpperCase();
+                    if (tagetT == 'H2' || tagetT == 'H3') {
+                        $(element).addClass('title-nav');
+                        var contentH = $(element).html();//获取内容
+                        var markid = "M-" + $(element).get(0).tagName + "-" + index.toString();
+                        $(this).attr('id', markid);
+                        if (tagetT.substr(1, 2) == '2') {
+                            if ($(select).children('ul').length == 0) {
+                                $(select).append(document.createElement('ul'));
+                            }
+                            var h2ele = $(select).children('ul').get(0);
+                            $(h2ele).append("<li><a href='#" + markid + "'>" + contentH + "</a></li>");
+                            lastElm = $(h2ele).children('li').get($(h2ele).children('li').length - 1)
+                        } else {
+                            if (lastElm) {
+                                if ($(lastElm).children('ul').length == 0) {
+                                    $(lastElm).append(document.createElement('ul'));
+                                }
+                                var h3ele = $(lastElm).children('ul').get(0);
+                                $(h3ele).append("<li><a href='#" + markid + "'>" + contentH + "</a></li>");
+                            }
+                        }
+                    }
+                });
+                //锚点平滑移动到指定位置
+                if (lastElm) {
+                    $(select).find('li a').click(function () {
+                        $(select).find('li a').css("color", "#0099ff");
+                        $(this).css("color", "red");
+                        $('html, body').animate({
+                            scrollTop: $($.attr(this, 'href')).offset().top - 56
+                        }, 500);
+                        return false;
+                    });
+                }
             }
         });
         $(function () {
             $('.article_content').initializeImage();
             $('.article_content').initializeCode();
+            $('.article_content').initializeNav(".article-nav-list");
         });
     </script>
 {% endblock %}
@@ -36,13 +77,22 @@
         {% get_article_tabs %}
         <div class="row">
             <div class="col-12 page-header">
-                <h2 class="card-title font-weight-bold text-info">{{ dict.title }}
+                <h2 class="card-title text-info pb-2 mb-4 font-italic border-bottom">{{ dict.title }}
                     <small>{{ dict.comment }}</small>
+                    <span class="blog-post-meta">{{ dict.date }}</span>
                 </h2>
             </div>
             <div class="col-12 article_content">
-                {{ dict.article }}
+                {% if dict.summary %}
+                    <p>{{ dict.summary }}</p>
+                {% endif %}
+                <div class="row" style="margin: 0">
+                    {{ dict.article }}
+                </div>
             </div>
         </div>
+    </div>
+    <div class="article-nav-wrap">
+        <div class="article-nav-list"></div>
     </div>
 {% endblock %}

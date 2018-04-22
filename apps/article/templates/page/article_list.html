@@ -4,22 +4,21 @@
         <div class="media mb-1 mb-sm-2 p-2 p-lg-3">
             <div class="align-self-center mr-2 mr-lg-3 w-25 modal-open">
                 <a href="{{ foo.url }}" target="_blank">
-                    <img class="w-100 article-img" src="/static/base/timg.png"
+                    <img class="w-100 article-img" src="{{ foo.timg|default:'/static/base/timg.png' }}"
                          alt="{{ foo.title }}">
                 </a>
             </div>
             <div class="media-body">
                 <div class="text-muted mb-2 f-12">
-                    <span>ankang</span>
-                    <span><i
-                            class="fa fa-calendar-times-o ml-2 mr-1"></i>{{ foo.date|naturaltime }}</span>
-                    <span><i class="fa fa-recycle"></i></span>
+                    <span><i class="fa fa-user-circle-o mr-1"></i>Ankang</span>
+                    <span><i class="fa fa-calendar-times-o ml-2 mr-1"></i>{{ foo.date|naturaltime }}</span>
                 </div>
-                <h2 class="mt-0 font-weight-bold text-info f-17">
+                <h2 class="mt-0 font-italic text-info">
                     <a href="{{ foo.url }}" target="_blank">{{ foo.title }}</a>
+                    <small class="text-secondary">{{ foo.comment }}</small>
                 </h2>
-                <p class="d-none d-sm-block mb-2 f-15">{{ foo.comment|truncatechars:130 }}</p>
-                <p class="d-block d-sm-none mb-2 f-15">{{ foo.comment|truncatechars:64 }}</p>
+                <p class="d-none d-sm-block mb-2">{{ foo.summary|default:'没有简介...'|truncatechars:130 }}</p>
+                <p class="d-block d-sm-none mb-2">{{ foo.summary|default:'没有简介...'|truncatechars:64 }}</p>
             </div>
         </div>
     {% endfor %}

@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from apps.article.models import Article, ArticleGroup, ExtSource
+from apps.article.models import Article, ArticleGroup
 from django.utils.safestring import mark_safe
 import datetime, json
 from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage
+from django.shortcuts import render_to_response
 
 
 # Create your views here.
@@ -12,27 +13,25 @@ def gettitle():
     return Cache().get('titles')
 
 
-def gettop():
-    if not Cache().get('tops'):
-        Cache('tops', Article.objects.order_by('-createdate', '-articleid')[:10])
-    return Cache().get('tops')
-
-
-def getextpic():
-    if not Cache().get('carousel'):
-        Cache('carousel', ExtSource.objects.filter(state='A', type='CP'))
-    if not Cache().get('adpic'):
-        Cache('adpic', ExtSource.objects.filter(state='A', type='RP'))
-    return {'carousel': Cache().get('carousel'), 'adpic': Cache().get('adpic')}
-
-
 def article(request, gid, aid):
     grouoplist = parsetitles(gettitle(), int(gid))
     articles = Article.objects.get(articleid=int(aid))
+    if not articles:
+        return render_to_response('404.html')
+
+    cd = articles.createdate.strftime("%Y%m%d%H%M%S")
+    ms_key = '{0}_ms_{1}'.format(aid, cd)
+    cach_ms = Cache().get(ms_key)
+    if cach_ms:
+        ms = cach_ms
+    else:
+        ms = mark_safe(articles.context)
+        Cache(ms_key, ms, 60 * 60 * 12)
 
     result = {'title': articles.title,
               'comment': articles.comment,
-              'article': mark_safe(articles.context),
+              'summary': articles.summary,
+              'article': ms,
               'groupid': articles.group.groupid,
               'date': articles.createdate}
 
@@ -60,7 +59,7 @@ def catlog(request, gid, pid):
                                              createdate__year=qrydate.year,
                                              createdate__month=qrydate.month,
                                              createdate__day=qrydate.day).all()
-        except:
+        except ValueError:
             catlogs = Article.objects.filter(group__comment=gid).all()
 
     ret = generatepage(catlogs, pid)

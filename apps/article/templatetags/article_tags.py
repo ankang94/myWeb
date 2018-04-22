@@ -54,3 +54,4 @@ def get_article_tabs(context):
     if 'catlog.html' in context.template.name:
         context.update({'page_type': 'C'})
     return context
+

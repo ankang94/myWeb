@@ -1,16 +1,33 @@
+//回到顶部
+$(window).scroll(function () {
+    $('#to-top').hide();
+    if ($(window).scrollTop() >= 600) {
+        $('#to-top').show();
+    }
+});
 $(function () {
     // 目录与内容判断
     var navigationBar = $('.cl-nav-bar'),
         navigationFooter = $('.footer'),
         navigationContent = ($('.wrapper-catlog').length > 0) ? $('.wrapper-catlog') : $('.wrapper-content');
 
+    //bootstrap4 tooltips
+    $('[data-toggle="tooltip"]').tooltip()
+
+    // right-bar margin
     $('.right-bar:first').children('div').not(':first').css('margin', '5px 0');
+
+    $("#to-top").on('click', function () {
+        var speed = 400;//滑动的速度
+        $('body,html').animate({scrollTop: 0}, speed);
+        return false;
+    });
 
     /* --------------------------------
 
-    1. Footer
+     1. Footer
 
-    -------------------------------- */
+     -------------------------------- */
     setTimeout(function () {
         positionFooter();
 
@@ -32,9 +49,9 @@ $(function () {
 
     /* --------------------------------
 
-    2. Float-Nav-Bar
+     2. Float-Nav-Bar
 
-    -------------------------------- */
+     -------------------------------- */
     //set scrolling variables
     var scrolling = false,
         previousTop = 0,
@@ -82,9 +99,9 @@ $(function () {
 
     /* --------------------------------
 
-    3. Line-To-Line-Cav
+     3. Line-To-Line-Cav
 
-    -------------------------------- */
+     -------------------------------- */
 
     //封装方法，压缩之后减少文件大小
     function get_attribute(node, attr, default_value) {
@@ -162,8 +179,8 @@ $(function () {
         canvas_id = "c_n" + config.l, //canvas id
         context = the_canvas.getContext("2d"), canvas_width, canvas_height,
         frame_func = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (func) {
-            window.setTimeout(func, 1000 / 60);
-        }, random = Math.random,
+                window.setTimeout(func, 1000 / 60);
+            }, random = Math.random,
         current_point = {
             x: null, //当前鼠标x
             y: null, //当前鼠标y
@@ -206,4 +223,24 @@ $(function () {
     setTimeout(function () {
         frame_func(draw_canvas);
     }, 100);
+
+    /* --------------------------------
+
+     4. Color-Tags
+
+     -------------------------------- */
+    var colorpool = {};
+    var colorbang = ['#78BBE6', '#EFE909', '#A3DE83', '#00BBF0', '#FF2E63', '#0D7377', '#AC005D', '#0881A3', '#EDA045']
+
+
+    $('.tags_group').find('label').each(function () {
+        if (colorpool[$(this).children('abbr').get(0).innerHTML]) {
+            $(this).css('background', colorpool[$(this).children('abbr').get(0).innerHTML]);
+        } else {
+            if (colorbang.length > 0) {
+                $(this).css('background', colorbang.pop());
+            }
+            colorpool[$(this).children('abbr').get(0).innerHTML] = $(this).css('background');
+        }
+    });
 });
