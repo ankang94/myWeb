@@ -28,7 +28,15 @@
                     }
                 },
                 onPageClicked: function (event, originalEvent, type, page) {
-                    location.href = "/p" + page;
+                    var cur_url = window.location.pathname;
+                    if (cur_url.substr(-1, 1)=='/') {
+                        cur_url = cur_url.substring(0, cur_url.length-1);
+                    }
+                    if (/\/p\d+/.test(cur_url)) {
+                        cur_url = cur_url.substring(0, cur_url.indexOf('/p'));
+                    }
+                    cur_url = cur_url + "/p" + page + window.location.search;
+                    location.href = cur_url;
                 }
             });
         });
