@@ -11,7 +11,7 @@
         <h3 class="ab_title">最近更新</h3>
         <ul class="tags_group">
             {% for foo in top %}
-                <li><a href={{ foo.url }}>
+                <li><a href={{ foo.url }} target="_blank">
                     <div class="row" style="margin:0 0 -0.8rem 0; width: 100%; padding: 0 0.2rem">
                         <h5 class="tags col-9" style="text-align: left; padding-left: 0">
                             <b class="circle1">{{ forloop.counter }}</b> {{ foo.title }}

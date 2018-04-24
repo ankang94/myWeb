@@ -18,8 +18,8 @@ class BaseSetting(object):
 
 
 class GlobalSetting(object):
-    site_title = u'安康云'
-    site_footer = u'安康云'
+    site_title = u'安康博客'
+    site_footer = u'安康博客'
 
 
 site.register(BaseAdminView, BaseSetting)
