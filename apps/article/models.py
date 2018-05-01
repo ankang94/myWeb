@@ -59,6 +59,7 @@ class Article(models.Model):
     comment = models.CharField(max_length=255, verbose_name=u'副标题', null=True, blank=True)
     summary = models.CharField(max_length=2000, verbose_name=u'简述', null=True, blank=True)
     context = models.TextField(verbose_name=u'文章内容', null=True, blank=True)
+    draft = models.FileField(verbose_name=u'演示文档', blank=True, upload_to='frame')
     createdate = models.DateTimeField(verbose_name=u'文章创建日期', auto_now=True)
     script = models.ManyToManyField('Script', verbose_name=u'需要的脚本', blank=True)
     image = models.ManyToManyField('Image', verbose_name=u'需要图片', blank=True)

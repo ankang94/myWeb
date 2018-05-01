@@ -37,6 +37,9 @@ def article(request, gid, aid):
               'groupid': articles.group.groupid,
               'date': articles.createdate}
 
+    if articles.draft and hasattr(articles.draft, 'url'):
+        result['draft'] = articles.draft.url
+
     parsesource(articles, result)
     tabs = parsetabs(Cache().get('titles'), result)
     return render(request, 'page/container.html', {'dict': result, 'titles': grouoplist, 'tabs': tabs})

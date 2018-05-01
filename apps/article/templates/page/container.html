@@ -80,6 +80,28 @@
             $('.article_content').initializeImage();
             $('.article_content').initializeCode();
             $('.article_content').initializeNav(".article-nav-list");
+            {% if dict.draft %}
+                $('#ppt').show().on('click', function () {
+                    $('body').prop('scrollTop', '0').css("overflow", "hidden");
+                    $('.cl-nav-bar').addClass('ptt_navbar');
+                    $('.wrapper-content').addClass('ppt_container');
+                    var iframe = document.createElement("iframe");
+                    iframe.src = "{{ dict.draft }}";
+                    iframe.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+                    iframe.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+                    iframe.id = "ppt_frame";
+                    iframe.style.cssText = "position:fixed;top:0;left:0;z-index: 0";
+                    $("body").get(0).appendChild(iframe);
+
+                    $('#end_ppt').show().on('click', function () {
+                        $('body').prop('scrollTop', '0').css("overflow", "auto");
+                        $('.cl-nav-bar').removeClass('ptt_navbar');
+                        $('.wrapper-content').removeClass('ppt_container');
+                        $('#ppt_frame').remove();
+                        $('#end_ppt').hide();
+                    });
+                });
+            {% endif %}
         });
     </script>
 {% endblock %}

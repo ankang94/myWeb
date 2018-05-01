@@ -79,6 +79,36 @@ a:hover {
     margin: 0;
 }
 
+#ppt {
+    display: none;
+}
+
+.ptt_navbar {
+    -webkit-transform: translateY(-80px);
+    -ms-transform: translateY(-80px);
+    transform: translateY(-80px);
+}
+
+.ppt_container {
+    -webkit-transform: translateY(1800px);
+    -ms-transform: translateY(1800px);
+    transform: translateY(1800px);
+}
+
+#end_ppt {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    color: grey;
+    transition:1s;
+    z-index: 999;
+}
+
+#end_ppt:hover {
+    color: white;
+    transform:rotate(180deg)scale(1.5);
+}
+
 .catlog-grid {
     padding: 0 5px 0 5px;
 }
@@ -90,6 +120,11 @@ a:hover {
 .wrapper-content {
     background: #fff repeat scroll center top;
     box-shadow: 0 1px 3px 0 #b5b5b5;
+    will-change: transform;
+    -webkit-transition: -webkit-transform .5s;
+    transition: -webkit-transform .5s;
+    transition: transform .5s;
+    transition: transform .5s, -webkit-transform .5s;
 }
 
 .right-bar {
@@ -209,6 +244,11 @@ h2 small {
 .cl-nav-bar {
     position: relative;
     z-index: 1;
+    will-change: transform;
+    -webkit-transition: -webkit-transform .5s;
+    transition: -webkit-transform .5s;
+    transition: transform .5s;
+    transition: transform .5s, -webkit-transform .5s;
 }
 
 .cl-nav-bar.fixed {
