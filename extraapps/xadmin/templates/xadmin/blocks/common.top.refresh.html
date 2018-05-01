@@ -15,6 +15,7 @@
                 csrfmiddlewaretoken: '{{ csrf_token }}',
                 REFRESH_DATA: $(this).find('a:first').attr('value')
             });
+            alert('清理' + $(this).find('a:first').text() + '缓存成功');
         });
     });
 </script>
