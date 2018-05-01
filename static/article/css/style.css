@@ -20,6 +20,7 @@ a:hover {
     padding-right: 8px;
     position: absolute;
     right: 0;
+    cursor: pointer;
     z-index: 999;
 }
 
@@ -81,6 +82,7 @@ a:hover {
 
 #ppt {
     display: none;
+    cursor: pointer;
 }
 
 .ptt_navbar {
@@ -106,6 +108,7 @@ a:hover {
 
 #end_ppt:hover {
     color: white;
+    cursor: pointer;
     transform:rotate(180deg)scale(1.5);
 }
 
