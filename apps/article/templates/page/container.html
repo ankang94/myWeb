@@ -87,12 +87,12 @@
                     $('.wrapper-content').addClass('ppt_container');
                     var iframe = document.createElement("iframe");
                     iframe.src = "{{ dict.draft }}";
-                    iframe.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-                    iframe.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+                    iframe.width = "100%";
+                    iframe.height = "100%";
                     iframe.id = "ppt_frame";
+                    iframe.allowFullscreen = true;
                     iframe.style.cssText = "position:fixed;top:0;left:0;z-index: 0";
                     $("body").get(0).appendChild(iframe);
-
                     $('#end_ppt').show().on('click', function () {
                         $('body').prop('scrollTop', '0').css("overflow", "auto");
                         $('.cl-nav-bar').removeClass('ptt_navbar');
