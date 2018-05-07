@@ -4,7 +4,7 @@ __date__ = '2018/4/19 下午 3:11'
 
 from django import template
 from apps.article.models import Article, ArticleGroup, ExtSource
-from article.utils import Cache
+from myWeb.cache import Cache
 
 register = template.Library()
 
@@ -28,6 +28,8 @@ def gettop():
 def getadpic():
     if not Cache().get('adpic'):
         Cache('adpic', ExtSource.objects.filter(state='A', type='RP'))
+    if not Cache().get('adpic'):
+        return None
     return [{'title': item.title, 'url': item.path.url} for item in Cache().get('adpic')]
 
 
@@ -35,6 +37,8 @@ def getadpic():
 def get_carousel():
     if not Cache().get('carousel'):
         Cache('carousel', ExtSource.objects.filter(state='A', type='CP'))
+    if not Cache().get('carousel'):
+        return None
     return [{'name': item.title, 'url': item.path.url} for item in Cache().get('carousel')]
 
 
@@ -54,4 +58,3 @@ def get_article_tabs(context):
     if 'catlog.html' in context.template.name:
         context.update({'page_type': 'C'})
     return context
-
