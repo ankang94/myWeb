@@ -4,7 +4,7 @@ __date__ = '2018/4/19 下午 3:11'
 
 from django import template
 from apps.article.models import Article, ArticleGroup, ExtSource
-from myWeb.cache import Cache
+from myWeb.adapter import Cache
 
 register = template.Library()
 

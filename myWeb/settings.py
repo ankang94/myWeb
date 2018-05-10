@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'apps.article',
+    'apps.clone',
     'extraapps.xadmin',
     'crispy_forms',
 ]

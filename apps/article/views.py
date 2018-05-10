@@ -4,7 +4,8 @@ from django.utils.safestring import mark_safe
 import datetime, json
 from django.shortcuts import render_to_response
 from django.core.paginator import EmptyPage, PageNotAnInteger
-from article.utils import parsetitles, Cache, parsetabs, parsesource, generatepage
+from article.utils import parsetitles, parsetabs, parsesource, generatepage
+from myWeb.adapter import Cache
 
 
 # Create your views here.

@@ -102,14 +102,14 @@ a:hover {
     top: 1rem;
     right: 1rem;
     color: grey;
-    transition:1s;
+    transition: 1s;
     z-index: 999;
 }
 
 #end_ppt:hover {
     color: white;
     cursor: pointer;
-    transform:rotate(180deg)scale(1.5);
+    transform: rotate(180deg) scale(1.5);
 }
 
 .catlog-grid {
@@ -260,6 +260,12 @@ h2 small {
     width: 100%;
 }
 
+.cl-nav-bar.is-hidden {
+    -webkit-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    transform: translateY(-100%);
+}
+
 .header-content {
     display: table;
     width: 100%;
@@ -322,9 +328,7 @@ h2 small {
 
 .article-nav-wrap {
     position: fixed;
-    left: 50%;
     top: 20%;
-    margin-left: 570px;
 }
 
 .article-nav-list {
@@ -380,7 +384,7 @@ h3.title-nav {
 
 .article-nav-list > ul > li {
     list-style-type: none;
-    line-height: 1.2em;
+    line-height: 0.9em;
     color: #0099ff;
 }
 

@@ -21,6 +21,7 @@ import xadmin
 
 urlpatterns = [
     url('', include('article.urls', namespace='article')),
+    url('', include('clone.urls', namespace='clone')),
     url('^admin', xadmin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

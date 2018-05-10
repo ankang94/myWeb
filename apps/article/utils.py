@@ -8,33 +8,6 @@ from django.core.paginator import Paginator
 
 # common tools for article
 
-class Cache(object):
-    from django.core.cache import cache as redis_cache
-    from django_redis import get_redis_connection
-    cache = redis_cache
-    clear_redis = get_redis_connection("default")
-    _instance = None
-
-    def get(self, key):
-        return self.cache.get(key)
-
-    def remove(self, key=None):
-        if key:
-            if self.cache.keys(key):
-                self.cache.delete_pattern(key)
-        else:
-            self.clear_redis.flushall()
-
-    def __init__(self, key=None, value=None, timeout=None):
-        if key and value:
-            self.cache.set(key, value, timeout)
-
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super().__new__(cls, *args, **kwargs)
-        return cls._instance
-
-
 def parsetitles(pset, group=None):
     rlist = []
     plist = []

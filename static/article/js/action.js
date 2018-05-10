@@ -9,7 +9,9 @@ $(function () {
     // 目录与内容判断
     var navigationBar = $('.cl-nav-bar'),
         navigationFooter = $('.footer'),
-        navigationContent = ($('.wrapper-catlog').length > 0) ? $('.wrapper-catlog') : $('.wrapper-content');
+        catlogFlag = $('.wrapper-catlog').length > 0,
+        navigationContent = catlogFlag ? $('.wrapper-catlog') : $('.wrapper-content');
+
 
     //bootstrap4 tooltips
     $('[data-toggle="tooltip"]').tooltip()
@@ -80,9 +82,11 @@ $(function () {
         if (previousTop >= currentTop) {
             //向上滚动
             if (currentTop < navOffsetTop) {
+                catlogFlag ? null:navigationBar.removeClass('is-hidden');
                 navigationContent.removeClass('wrapper-slide');
                 navigationBar.removeClass('fixed');
             } else if (previousTop - currentTop > scrollDelta) {
+                catlogFlag ? null:navigationBar.removeClass('is-hidden');
                 navigationContent.addClass('wrapper-slide');
                 navigationBar.addClass('fixed');
             }
@@ -90,10 +94,10 @@ $(function () {
         } else {
             //向下滚动
             if (currentTop > navOffsetTop) {
+                catlogFlag ? null:navigationBar.addClass('is-hidden');
                 navigationBar.addClass('fixed');
                 navigationContent.addClass('wrapper-slide');
             }
-
         }
     }
 

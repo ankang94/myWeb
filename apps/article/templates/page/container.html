@@ -27,7 +27,7 @@
             },
             initializeNav: function (select) {
                 var lastElm,
-                    speedstep = .05,
+                    speedstep = .025,
                     colorbang = ['#f1c40f', '#c0392b', '#e67e22', '#2ecc71', '#3498db'];
                 $(this).find('*').each(function (index, element) {
                     var tagetT = $(element).get(0).tagName.substr(0, 2).toUpperCase();
@@ -45,7 +45,7 @@
                             var h2ele = $(select).children('ul').get(0);
                             $(h2ele).append("<li class='bookmark' style='transition-delay: " + speedstep + "s;'><a href='#" + markid + "' style='border-right: 5px solid " + curcol + ";'>" + contentH + "</a></li>");
                             lastElm = $(h2ele).children('li').get($(h2ele).children('li').length - 1);
-                            speedstep = speedstep + .05;
+                            speedstep = speedstep + .025;
                         } else {
                             if (lastElm) {
                                 if ($(lastElm).children('ul').length == 0) {
@@ -53,7 +53,7 @@
                                 }
                                 var h3ele = $(lastElm).children('ul').get(0);
                                 $(h3ele).append("<li class='bookmark' style='transition-delay: " + speedstep + "s;'><a href='#" + markid + "' style='border-right: 5px solid #2c3e50;'>" + contentH + "</a></li>");
-                                speedstep = speedstep + .05;
+                                speedstep = speedstep + .025;
                             }
                         }
                     }
@@ -75,6 +75,21 @@
                     });
                 }
             }
+        });
+
+        function nav_change_resize() {
+            if (window.innerWidth > 1024) {
+                $('.wrapper-content').css('width', '60%');
+            }
+            else {
+                $('.wrapper-content').removeAttr('style');
+            }
+            var withNbr = $('.wrapper-content').offset().left + $('.wrapper-content').outerWidth();
+            $('.article-nav-wrap').css('margin-left', withNbr);
+        }
+
+        $(window).resize(function () {
+            nav_change_resize();
         });
         $(function () {
             $('.article_content').initializeImage();
@@ -102,6 +117,7 @@
                     });
                 });
             {% endif %}
+            nav_change_resize();
         });
     </script>
 {% endblock %}

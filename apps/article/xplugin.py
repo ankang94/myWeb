@@ -1,7 +1,7 @@
 from django.template import loader
 from xadmin.views import BaseAdminPlugin
 from xadmin.plugins.utils import get_context_dict
-from article.utils import Cache
+from myWeb.adapter import Cache
 
 
 class RefreshButton(BaseAdminPlugin):
