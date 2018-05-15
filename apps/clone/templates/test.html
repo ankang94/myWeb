@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    {% load static %}
+    <script src="{% static 'jquery/jquery.min.js' %}"></script>
+    <script type="text/javascript">
+        function check(form) {
+            if (form.taskId.value == '') {
+                alert('please input taskId!');
+                form.taskId.focus();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    </script>
+</head>
+<body>
+<form method="post" action="" onsubmit="return check(this);">
+    {% csrf_token %}
+    <input type="text" name="taskId" placeholder="input taskid">
+    <input type="submit" value="Submit">
+</form>
+{% if list %}
+    {% for item in list %}
+        <p>{{ item }}</p>
+    {% endfor %}
+{% endif %}
+</body>
+</html>
