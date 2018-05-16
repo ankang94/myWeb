@@ -28,18 +28,16 @@ def gettop():
 def getadpic():
     if not Cache().get('adpic'):
         Cache('adpic', ExtSource.objects.filter(state='A', type='RP'))
-    if not Cache().get('adpic'):
-        return None
-    return [{'title': item.title, 'url': item.path.url} for item in Cache().get('adpic')]
+    adpic = Cache().get('adpic')
+    return [{'title': item.title, 'url': item.path.url} for item in adpic] if adpic else []
 
 
 @register.simple_tag
 def get_carousel():
     if not Cache().get('carousel'):
         Cache('carousel', ExtSource.objects.filter(state='A', type='CP'))
-    if not Cache().get('carousel'):
-        return None
-    return [{'name': item.title, 'url': item.path.url} for item in Cache().get('carousel')]
+    carousel = Cache().get('carousel')
+    return [{'name': item.title, 'url': item.path.url} for item in carousel] if carousel else []
 
 
 @register.inclusion_tag('page/right_bar.html', takes_context=True)
