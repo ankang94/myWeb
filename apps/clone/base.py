@@ -34,8 +34,9 @@ class SelfException(Exception):
 
 
 def create_soup(dynamic=False, config=None, *clzz):
+    from itertools import chain
     if dynamic:
-        class LoginEntry(*clzz, Entry):
+        class LoginEntry(*chain(clzz, (Entry,))):
             def __init__(self):
                 super(clzz[-1], self).__init__(config)
 
@@ -58,6 +59,7 @@ class Entry:
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
         if config and config.user_data:
             chrome_options.add_argument('--user-data-dir=' + config.user_data)  # 设置成用户
         if config and config.user_crx:
