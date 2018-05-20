@@ -4,30 +4,178 @@
     <meta charset="UTF-8">
     <title>copy</title>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <script src="{% static 'jquery/jquery.min.js' %}"></script>
-    <script type="text/javascript">
-        function check(form) {
-            if (form.taskId.value == '') {
-                alert('please input taskId!');
-                form.taskId.focus();
-                return false;
-            }
-            else {
-                return true;
-            }
-        }
+    <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+        $(function () {
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    var forms = document.getElementsByClassName('needs-validation');
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+            $("[data-toggle='tooltip']").tooltip();
+            {% if ret|length > 0 %}
+                var form_data = {{ ret|safe }};
+                $.each(form_data, function (index, value) {
+                    var option = document.createElement("option");
+                    option.text = value.name;
+                    option.value = index;
+                    $('#name').append(option);
+                });
+                $('#name').bind('change', function () {
+                    if (this.value !== "" && this.value != null && !isNaN(this.value)) {
+                        $('#title').val(form_data[this.value].title);
+                        $('#shost').val(form_data[this.value].shost);
+                        $('#h2').val(form_data[this.value].h2);
+                        $('#h3').val(form_data[this.value].h3);
+                        $('#context').val(form_data[this.value].context);
+                        $('#code').val(form_data[this.value].code);
+                        $('#host').val(form_data[this.value].host);
+                    } else {
+                        $('form')[0].reset();
+                    }
+                });
+                {% if cust_data %}
+                    var cust_data = {{ cust_data|safe }};
+                    $('#name').val(cust_data.name);
+                    $('#url').val(cust_data.url);
+                    $('#shost').val(cust_data.shost);
+                    $('#title').val(cust_data.title);
+                    $('#h2').val(cust_data.h2);
+                    $('#h3').val(cust_data.h3);
+                    $('#context').val(cust_data.context);
+                    $('#code').val(cust_data.code);
+
+                    $('#clone').attr('disabled', 'disabled');
+                    $('#save').removeAttr('disabled');
+                    $('#name').attr('disabled', 'disabled');
+                    $('form').find('input').each(function () {
+                        this.readOnly = true;
+                    });
+
+                    $('#save').parent().on('click', function () {
+                        var save_key = $('#save_key').val()
+                        if (save_key) {
+                            $.post('', {
+                                csrfmiddlewaretoken: '{{ csrf_token }}',
+                                'save_key': save_key,
+                            }, function (result) {
+                                alert(result);
+                                window.location.href = "/";
+                            });
+                        }
+                    });
+
+                    // 图片拼接
+                    var media_path = '/media/tmp/';
+                    $('#copy_view').find('img').each(function () {
+                        $(this).attr('src', media_path + $(this).attr('alt'));
+                    });
+
+                {% endif %}
+            {% endif %}
+        });
     </script>
 </head>
-<body>
-<form method="post" action="" onsubmit="return check(this);">
-    {% csrf_token %}
-    <input type="text" name="taskId" placeholder="input taskid">
-    <input type="submit" value="Submit">
-</form>
-{% if list %}
-    {% for item in list %}
-        <p>{{ item }}</p>
-    {% endfor %}
-{% endif %}
+<body class="bg-light">
+<div class="container">
+    <div class="text-center">
+        <h2>Copy Article From Internet</h2>
+        <p>Below is an example form built entirely with Bootstrap's form controls. Each required form group has a
+            validation state that can be triggered by attempting to submit the form without completing it.</p>
+    </div>
+
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="mb-3">Copy Form</h4>
+            <form method="post" action="" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name">Web Site</label>
+                    <select class="custom-select d-block w-100" id="name" name="name" required>
+                        <option value>Choose...</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Valid web site is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="url">Url</label>
+                    <input class="form-control" type="text" name="url" id="url" required>
+                    <div class="invalid-feedback">
+                        Valid utl is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="shost">Source Host</label>
+                    <input class="form-control" type="text" name="shost" id="shost">
+                </div>
+                <div class="mb-3">
+                    <label for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="title" required>
+                    <div class="invalid-feedback">
+                        Valid title is required.
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="h2">H2</label>
+                        <input type="text" class="form-control" id="h2" name="h2">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="h3">H3</label>
+                        <input type="text" class="form-control" id="h3" name="h3">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="context">Context</label>
+                    <input class="form-control" type="text" id="context" name="context" required>
+                    <div class="invalid-feedback">
+                        Valid context is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="code">Code</label>
+                    <input class="form-control" type="text" id="code" name="code">
+                </div>
+                <hr class="mb-4">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="submit" id="clone" value="Clone" class="btn btn-primary btn-block">
+                    </div>
+                    <div class="col-6">
+                        <span tabindex="0" data-toggle="tooltip" title="Save enabled after clone">
+                            <button id="save" type="button" class="btn btn-primary btn-block"
+                                    style="pointer-events: none;" disabled>Save</button>
+                            <input id="save_key" type="hidden" value="{{ temp_copy_article_id }}">
+                        </span>
+                    </div>
+                </div>
+                <input type="hidden" id="host" name="host">
+            </form>
+        </div>
+        <div class="col-md-6" id="copy_view">
+            <h4 class="mb-3">Copy View</h4>
+            <hr class="mb-4">
+            {% if copy_view %}
+                {{ copy_view }}
+            {% endif %}
+        </div>
+    </div>
+</div>
 </body>
 </html>
