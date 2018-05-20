@@ -119,7 +119,7 @@ def clone_web_article(request):
             save_article.context = save_data['article']
             save_article.save()
 
-            if save_data['pic_source']:
+            if 'pic_source' in save_data.keys():
                 for item in save_data['pic_source']:
                     save_img = Image()
                     save_img.name = item
@@ -127,7 +127,7 @@ def clone_web_article(request):
                     save_img.save()
                     save_article.image.add(save_img)
 
-            if save_data['code_source']:
+            if 'code_source' in save_data.keys():
                 need_js = Script.objects.get(name='prettify.js')
                 need_css = Script.objects.get(name='prettify(sublime)')
                 save_article.script.add(need_js, need_css)
@@ -179,8 +179,8 @@ def clone_web_article(request):
                 pic_source_list = []
                 for item in article.select("img"):
                     item['class'] = 'img-fluid'
-                    imgurl = str(item['src']).split('?')[0]
-                    name = imgurl.split('/')[-1]
+                    imgurl = str(item['src'])
+                    name = str(hash(imgurl))
                     pic_source_list.append(name)
                     item['alt'] = name
                     del item['src']
