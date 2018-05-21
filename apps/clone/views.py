@@ -29,7 +29,7 @@ def login_csdn(param):
         def perform(self):
             url = str(self.args)
             if os.path.exists(cookie_dir):
-                self.driver.get('https://passport.csdn.net/account/login')
+                self.driver.get('https://passport.csdn.net')
                 cookies = pickle.load(open(cookie_dir, "rb"))
                 for cookie in cookies:
                     self.driver.add_cookie(cookie)
@@ -44,12 +44,12 @@ def login_csdn(param):
                 self.driver.get(url)
 
         def login_cookie(self):
-            self.driver.get('https://passport.csdn.net/account/login')
+            self.driver.get('https://passport.csdn.net')
             # 显示等待登陆加载
             WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(
                 (By.CLASS_NAME, "login-part")))
-            username = '***'
-            password = '***'
+            username = '####'
+            password = '####'
             js = "$('.login-part:first > h3 > a').click();\
                 $('#username').val('" + username + "');\
                 $('#password').val('" + password + "');\
@@ -134,7 +134,9 @@ def clone_web_article(request):
             article_title = soup.select(title)  # 表字段
             if article_title and len(article_title) > 0:
                 temp_copy_article['title'] = str(article_title[0].string)
-            soup.select("#btn-readmore")[0].string.replace_with("")
+            full_btn = soup.select("#btn-readmore")
+            if full_btn and len(full_btn) > 0:
+                full_btn[0].string.replace_with("")
             # context
             article_context = soup.select("article")
             if article_context and len(article_context) > 0:
