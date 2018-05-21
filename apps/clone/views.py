@@ -29,7 +29,7 @@ def login_csdn(param):
         def perform(self):
             url = str(self.args)
             if os.path.exists(cookie_dir):
-                self.driver.get('https://passport.csdn.net')
+                self.driver.get('https://www.csdn.net')
                 cookies = pickle.load(open(cookie_dir, "rb"))
                 for cookie in cookies:
                     self.driver.add_cookie(cookie)
@@ -48,8 +48,8 @@ def login_csdn(param):
             # 显示等待登陆加载
             WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(
                 (By.CLASS_NAME, "login-part")))
-            username = '####'
-            password = '####'
+            username = '***'
+            password = '***'
             js = "$('.login-part:first > h3 > a').click();\
                 $('#username').val('" + username + "');\
                 $('#password').val('" + password + "');\
@@ -144,12 +144,14 @@ def clone_web_article(request):
                 # 添加导航
                 if h3:
                     for item in article.find_all(h3):  # 表字段
-                        item.name = 'h3'
+                        item.string = item.get_text(strip=True)
                         item.attrs = []
+                        item.name = 'h3'
                 if h2:
                     for item in article.find_all(h2):  # 表字段
-                        item.name = 'h2'
+                        item.string = item.get_text(strip=True)
                         item.attrs = []
+                        item.name = 'h2'
                 # 处理代码 -- 这个要处理//简单处理pre代码块
                 code_source = 0
                 for item in article.select(code):
