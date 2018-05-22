@@ -44,29 +44,28 @@ def create_soup(config=None, *clzz):
         def __init__(self):
             super(clzz[-1], self).__init__(config)
 
-    url = config.url
-    if not url:
+    if not config.url:
         raise SelfException('static web view need url.')
 
     s = requests.session()
     s.headers = config.headers
     s.verify = False
-    target_html = s.get(url)
+    target_html = s.get(config.url)
     if config.cookie_path:
         jar = RequestsCookieJar()
         if os.path.exists(config.cookie_path):
             load_cookie(config.cookie_path, jar)
             # 添加session再次访问
-            target_html = s.get(url, cookies=jar)
+            target_html = s.get(config.url, cookies=jar)
             # 重定向重新获取session
-            if 'passport.csdn.net' in target_html.url:
+            if config.url != target_html.url:
                 LoginEntry().start()
                 jar = RequestsCookieJar()
         else:
             LoginEntry().start()
 
         load_cookie(config.cookie_path, jar)
-        target_html = s.get(url, cookies=jar)
+        target_html = s.get(config.url, cookies=jar)
 
     soup = BeautifulSoup(target_html.text, 'lxml')
     return soup
