@@ -1,65 +1,42 @@
-import re
-import os
 import json
+import os
+import pickle
 import uuid
+
 import requests
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.core.files import File
-from clone.base import Config, create_soup
-from apps.clone.models import CopyArticle
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.utils.safestring import mark_safe
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 from apps.article.models import Article, ArticleGroup, Image, Script
+from apps.clone.models import CopyArticle
+from clone.base import COOKIE_DIR
+from clone.base import Config, create_soup
 from myWeb.adapter import Cache
 
 pic_tmp_path = os.path.join(settings.MEDIA_ROOT, 'tmp')
+cookie_dir = os.path.join(COOKIE_DIR, 'csdn.pkl')
 
 
-def login_csdn(param):
-    import pickle
-    import os
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from clone.base import COOKIE_DIR
-    cookie_dir = os.path.join(COOKIE_DIR, 'csdn.pkl')
-
-    class LoginCSDN:
-        def perform(self):
-            url = str(self.args)
-            if os.path.exists(cookie_dir):
-                self.driver.get('https://passport.csdn.net')
-                cookies = pickle.load(open(cookie_dir, "rb"))
-                for cookie in cookies:
-                    self.driver.add_cookie(cookie)
-            else:
-                self.login_cookie()
-            self.driver.get(url)
-            if 'passport.csdn.net' in self.driver.current_url:
-                # cookie过期重新生成
-                self.driver.delete_all_cookies()
-                os.remove(cookie_dir)
-                self.login_cookie()
-                self.driver.get(url)
-
-        def login_cookie(self):
-            self.driver.get('https://passport.csdn.net')
-            # 显示等待登陆加载
-            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(
-                (By.CLASS_NAME, "login-part")))
-            username = '####'
-            password = '####'
-            js = "$('.login-part:first > h3 > a').click();\
-                $('#username').val('" + username + "');\
-                $('#password').val('" + password + "');\
-                $('#fm1').submit();"
-            self.driver.execute_script(js)
-            pickle.dump(self.driver.get_cookies(), open(cookie_dir, "wb"), 0)
-
-    config = Config({'args': param})
-    soup = create_soup(True, config, LoginCSDN)
-    return soup
+class LoginCSDN:
+    def perform(self):
+        self.driver.get(self.config.url)
+        # 显示等待登陆加载
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(
+            (By.CLASS_NAME, "login-part")))
+        username = '***'
+        password = '***'
+        js = "$('.login-part:first > h3 > a').click();\
+            $('#username').val('" + username + "');\
+            $('#password').val('" + password + "');\
+            $('#fm1').submit();"
+        self.driver.execute_script(js)
+        pickle.dump(self.driver.get_cookies(), open(cookie_dir, "wb"), 0)
 
 
 def __init_clone_template():
@@ -124,11 +101,13 @@ def clone_web_article(request):
                 'title'), request.POST.get('shost'), request.POST.get('h2'), request.POST.get('h3'), request.POST.get(
                 'context'), request.POST.get('code')
 
-            # config = Config({
-            #     'headers': {'Host': host},
-            #     'url': url,
-            # })
-            soup = login_csdn(url)
+            config = Config({
+                'headers': {'Host': host},
+                'url': url,
+                'cookie': cookie_dir
+            })
+
+            soup = create_soup(config, LoginCSDN)
             temp_copy_article = {'url': url}
             # title
             article_title = soup.select(title)  # 表字段

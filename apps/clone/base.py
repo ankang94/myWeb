@@ -3,11 +3,14 @@ __author__ = 'ankang'
 __date__ = '2018/5/7 上午 9:29'
 
 import os
+import pickle
+
 import requests
+from bs4 import BeautifulSoup
 from django.conf import settings
+from requests.cookies import RequestsCookieJar
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from bs4 import BeautifulSoup
 
 COOKIE_DIR = os.path.join(settings.BASE_DIR, 'apps', 'clone', 'cookies')
 
@@ -16,7 +19,7 @@ class Config:
     args = None
     user_data = None
     user_crx = None
-
+    cookie_path = None
     header = {
         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:49.0) Gecko/20100101 Firefox/49.0',
     }
@@ -26,6 +29,7 @@ class Config:
         self.user_data = param.get('user_data')
         self.user_crx = param.get('user_crx')
         self.url = param.get('url')
+        self.cookie_path = param.get('cookie')
         self.headers = self.header.update(param.get('headers')) if param.get('headers') else self.header
 
 
@@ -33,27 +37,50 @@ class SelfException(Exception):
     pass
 
 
-def create_soup(dynamic=False, config=None, *clzz):
+def create_soup(config=None, *clzz):
     from itertools import chain
-    if dynamic:
-        class LoginEntry(*chain(clzz, (Entry,))):
-            def __init__(self):
-                super(clzz[-1], self).__init__(config)
 
-        target_html = LoginEntry().start()
-    else:
-        url = config.url
-        if not url:
-            raise SelfException('static web view need url.')
-        target_html = requests.get(url, headers=config.headers).text
+    class LoginEntry(*chain(clzz, (Entry,))):
+        def __init__(self):
+            super(clzz[-1], self).__init__(config)
 
-    soup = BeautifulSoup(target_html, 'lxml')
+    url = config.url
+    if not url:
+        raise SelfException('static web view need url.')
+
+    s = requests.session()
+    s.headers = config.headers
+    s.verify = False
+    target_html = s.get(url)
+    if config.cookie_path:
+        jar = RequestsCookieJar()
+        if os.path.exists(config.cookie_path):
+            load_cookie(config.cookie_path, jar)
+            # 添加session再次访问
+            target_html = s.get(url, cookies=jar)
+            # 重定向重新获取session
+            if 'passport.csdn.net' in target_html.url:
+                LoginEntry().start()
+                jar = RequestsCookieJar()
+        else:
+            LoginEntry().start()
+
+        load_cookie(config.cookie_path, jar)
+        target_html = s.get(url, cookies=jar)
+
+    soup = BeautifulSoup(target_html.text, 'lxml')
     return soup
+
+
+def load_cookie(cookie, jar):
+    cookies = pickle.load(open(cookie, "rb"))
+    for cookie in cookies:
+        jar.set(cookie['name'], cookie['value'])
 
 
 class Entry:
     def __init__(self, config):
-        self.args = config.args
+        self.config = config
         cap = webdriver.DesiredCapabilities.PHANTOMJS
         cap["phantomjs.page.settings.resourceTimeout"] = 1000
         chrome_options = Options()
@@ -73,7 +100,6 @@ class Entry:
     def start(self):
         try:
             self.perform()
-            return self.driver.page_source
         except Exception as e:
             if isinstance(e, SelfException):
                 print('get web content fail.')
