@@ -33,10 +33,6 @@ class Config:
         self.headers = self.header.update(param.get('headers')) if param.get('headers') else self.header
 
 
-class SelfException(Exception):
-    pass
-
-
 def create_soup(config=None, *clzz):
     from itertools import chain
 
@@ -44,14 +40,11 @@ def create_soup(config=None, *clzz):
         def __init__(self):
             super(clzz[-1], self).__init__(config)
 
-    if not config.url:
-        raise SelfException('static web view need url.')
-
     s = requests.session()
     s.headers = config.headers
     s.verify = False
     target_html = s.get(config.url)
-    if config.cookie_path:
+    if config.url != target_html.url:
         jar = RequestsCookieJar()
         if os.path.exists(config.cookie_path):
             load_cookie(config.cookie_path, jar)
@@ -92,19 +85,8 @@ class Entry:
             chrome_options.add_extension(config.user_crx)  # 自己下载的crx路径'd:\crx\AdBlock_v2.17.crx'
         self.driver = webdriver.Chrome(chrome_options=chrome_options)
 
-    # 新增类要又perform方法
-    def perform(self):
-        raise SelfException('no excute script found.')
-
     def start(self):
         try:
             self.perform()
-        except Exception as e:
-            if isinstance(e, SelfException):
-                print('get web content fail.')
-            else:
-                raise e
-            return None
         finally:
             self.driver.close()
-

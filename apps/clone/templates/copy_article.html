@@ -66,14 +66,18 @@
                     });
 
                     $('#save').parent().on('click', function () {
-                        var save_key = $('#save_key').val()
+                        var save_key = $('#save_key').val();
                         if (save_key) {
+                            $("#loadingModal").modal('show');
                             $.post('', {
                                 csrfmiddlewaretoken: '{{ csrf_token }}',
                                 'save_key': save_key,
                             }, function (result) {
-                                alert(result);
-                                window.location.href = "/";
+                                $("#loadingModal").modal('hide');
+                                if (result && !isNaN(result)) {
+                                    alert('保存成功，点击确定跳转至编辑页面');
+                                    window.location.href = "/adminarticle/article/" + result + "/update/";
+                                }
                             });
                         }
                     });
@@ -95,7 +99,6 @@
         <h2>Copy Article From Internet</h2>
         <p>ankangblog can clone blog from web site, but now only support csdn blog.</p>
     </div>
-
 </div>
 <div class="container-fluid">
     <div class="row">
@@ -170,10 +173,20 @@
         <div class="col-md-6" id="copy_view">
             <h4 class="mb-3">Copy View</h4>
             <hr class="mb-4">
-            {% if copy_view %}
-                {{ copy_view }}
-            {% endif %}
+            <div style="overflow-y: auto; height: 40rem">
+                {% if copy_view %}
+                    {{ copy_view }}
+                {% endif %}
+            </div>
         </div>
+    </div>
+</div>
+<div class="modal fade" id="loadingModal">
+    <div style="width: 200px;height:20px; z-index: 20000; position: absolute; text-align: center; left: 50%; top: 50%;margin-left:-100px;margin-top:-10px">
+        <div class="progress progress-striped active" style="margin-bottom: 0;">
+            <div class="progress-bar" style="width: 100%;"></div>
+        </div>
+        <h5 style="color: whitesmoke">正在保存...</h5>
     </div>
 </div>
 </body>
