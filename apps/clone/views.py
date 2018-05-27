@@ -139,10 +139,12 @@ def get_clone_page(request, resp):
             for item in article.find_all(h3):  # 表字段
                 item.name = 'h3'
                 item.attrs = []
+                item.string = item.get_text(strip=True)
         if h2:
             for item in article.find_all(h2):  # 表字段
                 item.name = 'h2'
                 item.attrs = []
+                item.string = item.get_text(strip=True)
         # 处理代码 -- 这个要处理//简单处理pre代码块
         code_source = 0
         for item in article.select(code):
