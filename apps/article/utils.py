@@ -81,7 +81,7 @@ def finditembyid(targetlist, targetid):
 
 def generatepage(catlogs, pid):
     catlist = []
-    paginator = Paginator(catlogs, 20)
+    paginator = Paginator(catlogs, 10)
     catlogs = paginator.page(int(pid))
 
     pageparam = json.dumps({'current': pid, 'total': paginator.num_pages})

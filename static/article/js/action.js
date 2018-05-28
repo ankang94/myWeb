@@ -14,7 +14,7 @@ $(function () {
 
 
     //bootstrap4 tooltips
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 
     // right-bar margin
     $('.right-bar:first').children('div').not(':first').css('margin', '5px 0');
@@ -38,7 +38,7 @@ $(function () {
             if ((navigationBar.height() + navigationContent.height() + navigationFooter.height()) < navigationContent.width() * 1.5) {
                 navigationContent.height(navigationContent.width() * 1.5);
             }
-            if (innerWidth < 450) {
+            if ($('.catlog-grid').height() > navigationContent.width() * 1.5 || innerWidth < 450) {
                 $('#pagebar').css('position', 'static');
             }
             // 屏蔽反色闪屏

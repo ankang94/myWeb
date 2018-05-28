@@ -369,7 +369,7 @@
         buildPageItem: function (type, page) {
 
             var itemContainer = $("<li class=\"page-item\"></li>"),//creates the item container
-                itemContent = $("<a class=\"page-link\"></a>"),//creates the item content
+                itemContent = $("<a class=\"page-link\" data-toggle=\"tooltip\"></a>"),//creates the item content
                 text = "",
                 title = "",
                 itemContainerClass = this.options.itemContainerClass(type, page, this.currentPage),
