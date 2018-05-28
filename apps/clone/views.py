@@ -1,6 +1,7 @@
 import json
 import os
 import pickle
+import threading
 import uuid
 
 import requests
@@ -159,19 +160,15 @@ def get_clone_page(request, resp):
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:49.0) Gecko/20100101 Firefox/49.0',
             'Host': shost  # 表字段
         }
+        threads = []
         pic_source_list = []
         for item in article.select("img"):
-            item['class'] = 'img-fluid'
-            imgurl = str(item['src'])
-            name = str(hash(imgurl))
-            pic_source_list.append(name)
-            item['alt'] = name
-            del item['src']
-            item = requests.get(imgurl, headers=headers).content
-            with open(os.path.join(pic_tmp_path, name), 'wb') as f:
-                f.write(item)
-                f.flush()
-                f.close()
+            t = threading.Thread(target=load_img, args=(item, headers, pic_source_list))
+            threads.append(t)
+        for i in threads:
+            i.start()
+        for i in threads:
+            i.join()
         temp_copy_article['pic_source'] = pic_source_list
         temp_copy_article['article'] = article.prettify()
     temp_copy_article_id = uuid.uuid1()
@@ -186,3 +183,17 @@ def get_clone_page(request, resp):
                          'context': context,
                          'code': code}
     resp['copy_view'] = mark_safe(temp_copy_article['article'])
+
+
+def load_img(item, headers, pic_source_list):
+    item['class'] = 'img-fluid'
+    imgurl = str(item['src'])
+    name = str(hash(imgurl))
+    pic_source_list.append(name)
+    item['alt'] = name
+    del item['src']
+    item = requests.get(imgurl, headers=headers).content
+    with open(os.path.join(pic_tmp_path, name), 'wb') as f:
+        f.write(item)
+        f.flush()
+        f.close()
