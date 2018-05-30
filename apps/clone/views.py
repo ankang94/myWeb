@@ -70,14 +70,14 @@ def init_clone_template():
                     'title': data.title,
                     'context': data.context,
                     }
-            if data.shost:
-                temp['shost'] = data.shost
             if data.h2:
                 temp['h2'] = data.h2
             if data.h3:
                 temp['h3'] = data.h3
             if data.code:
                 temp['code'] = data.code
+            if data.exclude:
+                temp['exclude'] = data.exclude
             template.append(temp)
             Cache('clone_template', template)
     return json.dumps(template)
@@ -113,26 +113,30 @@ def save_clone_page(request):
 
 
 def get_clone_page(request, resp):
-    host, url, title, shost, h2, h3, context, code = request.POST.get('host'), request.POST.get(
-        'url'), request.POST.get(
-        'title'), request.POST.get('shost'), request.POST.get('h2'), request.POST.get('h3'), request.POST.get(
-        'context'), request.POST.get('code')
+    host, url, title, h2, h3, context, code, exclude = request.POST.get('host'), \
+                                                       request.POST.get('url'), \
+                                                       request.POST.get('title'), \
+                                                       request.POST.get('h2'), \
+                                                       request.POST.get('h3'), \
+                                                       request.POST.get('context'), \
+                                                       request.POST.get('code'), \
+                                                       request.POST.get('exclude')
     config = Config({
         'headers': {'Host': host},
         'url': url,
         'cookie': cookie_dir
     })
-    soup = create_soup(config, LoginCSDN)
     temp_copy_article = {'url': url}
+    _soup, _conn = create_soup(config, LoginCSDN)
     # title
-    article_title = soup.select(title)  # 表字段
+    article_title = _soup.select(title)  # 表字段
     if article_title and len(article_title) > 0:
         temp_copy_article['title'] = str(article_title[0].string)
-    full_btn = soup.select("#btn-readmore")
+    full_btn = _soup.select("#btn-readmore")
     if full_btn and len(full_btn) > 0:
         full_btn[0].string.replace_with("")
     # context
-    article_context = soup.select("article")
+    article_context = _soup.select("article")
     if article_context and len(article_context) > 0:
         article = article_context[0]
         # 添加导航
@@ -151,19 +155,17 @@ def get_clone_page(request, resp):
         for item in article.select(code):
             item['class'] = 'prettyprint linenums'
             code_source += 1
-        for item in article.find_all('ul', class_='pre-numbering'):
-            item.extract()
         if code_source > 0:
             temp_copy_article['code_source'] = code_source
-        # 处理图片
-        headers = {
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:49.0) Gecko/20100101 Firefox/49.0',
-            'Host': shost  # 表字段
-        }
+        # 去除特定元素|分离
+        if exclude:
+            for exdom in str(exclude).split('|'):
+                for item in article.select(exdom):  # ul[class='pre-numbering']
+                    item.extract()
         threads = []
         pic_source_list = []
         for item in article.select("img"):
-            t = threading.Thread(target=load_img, args=(item, headers, pic_source_list))
+            t = threading.Thread(target=load_img, args=(item, _conn, pic_source_list))
             threads.append(t)
         for i in threads:
             i.start()
@@ -176,24 +178,23 @@ def get_clone_page(request, resp):
     resp['temp_copy_article_id'] = temp_copy_article_id
     resp['cust_data'] = {'name': request.POST.get('name'),
                          'title': title,
-                         'shost': shost,
                          'url': url,
                          'h2': h2,
                          'h3': h3,
                          'context': context,
-                         'code': code}
+                         'code': code,
+                         'exclude': exclude}
     resp['copy_view'] = mark_safe(temp_copy_article['article'])
 
 
-def load_img(item, headers, pic_source_list):
+def load_img(item, conn, pic_source_list):
     item['class'] = 'img-fluid'
     imgurl = str(item['src'])
     name = str(hash(imgurl))
     pic_source_list.append(name)
     item['alt'] = name
     del item['src']
-    item = requests.get(imgurl, headers=headers).content
     with open(os.path.join(pic_tmp_path, name), 'wb') as f:
-        f.write(item)
+        f.write(conn.get(imgurl).content)
         f.flush()
         f.close()

@@ -40,16 +40,16 @@ def create_soup(config=None, *clzz):
         def __init__(self):
             super(clzz[-1], self).__init__(config)
 
-    s = requests.session()
-    s.headers = config.headers
-    s.verify = False
-    target_html = s.get(config.url)
+    conn = requests.session()
+    conn.headers = config.headers
+    conn.verify = False
+    target_html = conn.get(config.url)
     if config.url != target_html.url:
         jar = RequestsCookieJar()
         if os.path.exists(config.cookie_path):
             load_cookie(config.cookie_path, jar)
             # 添加session再次访问
-            target_html = s.get(config.url, cookies=jar)
+            target_html = conn.get(config.url, cookies=jar)
             # 重定向重新获取session
             if config.url != target_html.url:
                 LoginEntry().start()
@@ -58,10 +58,10 @@ def create_soup(config=None, *clzz):
             LoginEntry().start()
 
         load_cookie(config.cookie_path, jar)
-        target_html = s.get(config.url, cookies=jar)
+        target_html = conn.get(config.url, cookies=jar)
 
     soup = BeautifulSoup(target_html.text, 'lxml')
-    return soup
+    return soup, conn
 
 
 def load_cookie(cookie, jar):

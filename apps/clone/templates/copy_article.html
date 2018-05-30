@@ -37,11 +37,11 @@
                 $('#name').bind('change', function () {
                     if (this.value !== "" && this.value != null && !isNaN(this.value)) {
                         $('#title').val(form_data[this.value].title);
-                        $('#shost').val(form_data[this.value].shost);
                         $('#h2').val(form_data[this.value].h2);
                         $('#h3').val(form_data[this.value].h3);
                         $('#context').val(form_data[this.value].context);
                         $('#code').val(form_data[this.value].code);
+                        $('#exclude').val(form_data[this.value].exclude);
                         $('#host').val(form_data[this.value].host);
                     } else {
                         $('form')[0].reset();
@@ -51,12 +51,12 @@
                     var cust_data = {{ cust_data|safe }};
                     $('#name').val(cust_data.name);
                     $('#url').val(cust_data.url);
-                    $('#shost').val(cust_data.shost);
                     $('#title').val(cust_data.title);
                     $('#h2').val(cust_data.h2);
                     $('#h3').val(cust_data.h3);
                     $('#context').val(cust_data.context);
                     $('#code').val(cust_data.code);
+                    $('#exclude').val(cust_data.exclude);
 
                     $('#clone').attr('disabled', 'disabled');
                     $('#save').removeAttr('disabled');
@@ -123,10 +123,6 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="shost">Source Host</label>
-                    <input class="form-control" type="text" name="shost" id="shost">
-                </div>
-                <div class="mb-3">
                     <label for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="title" required>
                     <div class="invalid-feedback">
@@ -153,6 +149,10 @@
                 <div class="mb-3">
                     <label for="code">Code</label>
                     <input class="form-control" type="text" id="code" name="code">
+                </div>
+                <div class="mb-3">
+                    <label for="shost">Exclude</label>
+                    <input class="form-control" type="text" name="exclude" id="exclude">
                 </div>
                 <hr class="mb-4">
                 <div class="row">
