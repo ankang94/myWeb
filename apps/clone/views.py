@@ -51,7 +51,10 @@ class CloneArticle(BaseAdminView):
     def post(self, request, *args, **kwargs):
         resp = {'ret': init_clone_template}
         if request.POST.get('save_key'):
-            return save_clone_page(request)
+            try:
+                return save_clone_page(request)
+            except Exception as e:
+                return HttpResponse(str(e))
         else:
             get_clone_page(request, resp)
         return render(request, self.template_name, resp)
@@ -84,10 +87,8 @@ def init_clone_template():
 
 
 def save_clone_page(request):
-    save_data = Cache().get(request.POST.get('save_key'))
     save_article = Article()
-    if not save_article:
-        return HttpResponse('timeout')
+    save_data = Cache().get(request.POST.get('save_key'))
     save_article.group = ArticleGroup.objects.get(groupid=0)
     save_article.title = save_data['title']
     save_article.comment = '转发自网络'
@@ -151,12 +152,12 @@ def get_clone_page(request, resp):
                 item.attrs = []
                 item.string = item.get_text(strip=True)
         # 处理代码 -- 这个要处理//简单处理pre代码块
-        code_source = 0
-        for item in article.select(code):
-            item['class'] = 'prettyprint'
-            code_source += 1
-        if code_source > 0:
-            temp_copy_article['code_source'] = code_source
+        code_source = article.select(code)
+        if len(code_source) > 0:
+            temp_copy_article['code_source'] = True
+            for item in code_source:
+                item['class'] = 'prettyprint'
+                item.string = item.get_text()
         # 去除特定元素|分离
         if exclude:
             for exdom in str(exclude).split('|'):
