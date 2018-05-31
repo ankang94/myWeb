@@ -106,7 +106,7 @@ def save_clone_page(request):
                 save_article.image.add(save_img)
     if 'code_source' in save_data.keys():
         need_js = Script.objects.get(name='prettify.js')
-        need_css = Script.objects.get(name='prettify(sublime)')
+        need_css = Script.objects.get(name='prettify.css')
         save_article.script.add(need_js, need_css)
     Cache().remove('tops')
     return HttpResponse(save_article.articleid)
@@ -153,7 +153,7 @@ def get_clone_page(request, resp):
         # 处理代码 -- 这个要处理//简单处理pre代码块
         code_source = 0
         for item in article.select(code):
-            item['class'] = 'prettyprint linenums'
+            item['class'] = 'prettyprint'
             code_source += 1
         if code_source > 0:
             temp_copy_article['code_source'] = code_source
