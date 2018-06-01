@@ -90,6 +90,9 @@
 
                 {% endif %}
             {% endif %}
+            {% if error %}
+                alert('失败了:' + {{ error }});
+            {% endif %}
         });
     </script>
 </head>
