@@ -10,8 +10,8 @@ from .xplugin import CopyPlugin
 
 
 class CopyArticleAdmin(object):
-    list_display = ['name', 'host', 'shost', 'title', 'h2', 'h3', 'context', 'code']
-    list_editable = ['name', 'host', 'shost', 'title', 'h2', 'h3', 'context', 'code']
+    list_display = ['name', 'host', 'title', 'h2', 'h3', 'context', 'code', 'exclude']
+    list_editable = ['name', 'host', 'title', 'h2', 'h3', 'context', 'code', 'exclude']
     model_icon = 'fa fa-building-o'
 
 
