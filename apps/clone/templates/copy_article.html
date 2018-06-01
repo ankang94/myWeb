@@ -76,7 +76,7 @@
                                     alert('保存成功，点击确定跳转至编辑页面');
                                     window.location.href = "/adminarticle/article/" + result + "/update/";
                                 }else {
-                                    alert('失败了:' + result);
+                                    alert('server error: ' + result);
                                 }
                             });
                         }
@@ -91,7 +91,7 @@
                 {% endif %}
             {% endif %}
             {% if error %}
-                alert('失败了:' + {{ error }});
+                alert('server error: {{ error }}');
             {% endif %}
         });
     </script>
