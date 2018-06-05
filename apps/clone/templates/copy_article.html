@@ -76,6 +76,8 @@
                                     alert('保存成功，点击确定跳转至编辑页面');
                                     window.location.href = "/adminarticle/article/" + result + "/update/";
                                 }else {
+                                    $('#save').parent().off('click');
+                                    $('#save').attr('disabled', 'disabled');
                                     alert('server error: ' + result);
                                 }
                             });
@@ -91,6 +93,11 @@
                 {% endif %}
             {% endif %}
             {% if error %}
+                $('form').find('input').each(function () {
+                    this.readOnly = true;
+                });
+                $('#clone').attr('disabled', 'disabled');
+                $('#save').attr('disabled', 'disabled');
                 alert('server error: {{ error }}');
             {% endif %}
         });
