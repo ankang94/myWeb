@@ -18,8 +18,7 @@ class RefreshButton(BaseAdminPlugin):
                                    {'name': '排行', 'val': '4'},
                                    {'name': '克隆模板', 'val': '5'},
                                    {'name': '登陆模板', 'val': '6'},
-                                   {'name': '所有', 'val': '7'}
-                                   ]}
+                                   {'name': '所有', 'val': '7'}]}
             context.update(content)
             nodes.append(
                 loader.render_to_string('xadmin/blocks/common.top.refresh.html',
