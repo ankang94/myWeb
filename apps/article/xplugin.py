@@ -16,7 +16,10 @@ class RefreshButton(BaseAdminPlugin):
                                    {'name': '轮播图', 'val': '2'},
                                    {'name': '右侧图', 'val': '3'},
                                    {'name': '排行', 'val': '4'},
-                                   {'name': '所有', 'val': '5'}]}
+                                   {'name': '克隆模板', 'val': '5'},
+                                   {'name': '登陆模板', 'val': '6'},
+                                   {'name': '所有', 'val': '7'}
+                                   ]}
             context.update(content)
             nodes.append(
                 loader.render_to_string('xadmin/blocks/common.top.refresh.html',
@@ -33,5 +36,7 @@ class RefreshPlugin(BaseAdminPlugin):
                             '2': 'carousel',
                             '3': 'adpic',
                             '4': 'tops',
-                            '5': None}.get(data))
+                            '5': 'clone_template',
+                            '6': 'clone_reptilian',
+                            '7': None}.get(data))
         return False

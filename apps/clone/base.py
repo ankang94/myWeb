@@ -113,13 +113,12 @@ def load_cookie(cookie_path, jar):
 
 
 def load_img(item, conn, pic_source_list):
-    item['class'] = 'img-fluid'
     imgurl = str(item['src'])
     name = str(hash(imgurl))
     pic_source_list.append(name)
-    item['alt'] = name
-    del item['src']
+    item.attrs = {'class': ['img-fluid'], 'alt': name}
     with open(os.path.join(PIC_TMP_PATH, name), 'wb') as f:
         f.write(conn.get(imgurl).content)
         f.flush()
         f.close()
+
