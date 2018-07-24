@@ -2,6 +2,8 @@
 __author__ = 'ankang'
 __date__ = '2018/5/7 下午 4:37'
 
+from enum import Enum, unique
+
 
 class Cache(object):
     from django.core.cache import cache as redis_cache
@@ -28,3 +30,27 @@ class Cache(object):
         if not cls.__instance:
             cls.__instance = super().__new__(cls)
         return cls.__instance
+
+
+@unique
+class Method(Enum):
+    GET = 'GET'
+    POST = 'POST'
+
+
+class Ajax(object):
+
+    @staticmethod
+    def connect(url, method, param):
+        import requests
+        import json
+        from django.conf import settings
+
+        config = settings.AJAX.get("default")
+
+        url = config.get("URL") + url
+        headers = config.get("HEADERS")
+
+        response = requests.request(method.value, url, headers=headers, params=param)
+
+        return json.loads(response.text)

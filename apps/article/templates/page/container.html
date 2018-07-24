@@ -12,7 +12,7 @@
     <script type="text/javascript">
         $.fn.extend({
             initializeImage: function () {
-                var images = {{ dict.image|safe }};
+                let images = {{ dict.image|safe }};
                 if (!$.isEmptyObject(images)) {
                     $(this).find('img').each(function () {
                         $(this).addClass('img-fluid');
@@ -21,37 +21,37 @@
                 }
             },
             initializeCode: function () {
-                if (typeof prettyPrint == 'function' && $(this).find('pre').length > 0) {
+                if (typeof prettyPrint === 'function' && $(this).find('pre').length > 0) {
                     prettyPrint();
                 }
             },
             initializeNav: function (select) {
-                var lastElm,
+                let lastElm,
                     speedstep = .025,
                     colorbang = ['#f1c40f', '#c0392b', '#e67e22', '#2ecc71', '#3498db', '#00e6c2', '#EFE909', '#A3DE83', '#00BBF0', '#FF2E63'];
                 $(this).find('*').each(function (index, element) {
-                    var tagetT = $(element).get(0).tagName.substr(0, 2).toUpperCase();
-                    if (tagetT == 'H2' || tagetT == 'H3') {
+                    let tagetT = $(element).get(0).tagName.substr(0, 2).toUpperCase();
+                    if (tagetT === 'H2' || tagetT === 'H3') {
                         $(element).addClass('title-nav');
-                        var contentH = $(element).html();//获取内容
-                        var markid = "M-" + $(element).get(0).tagName + "-" + index.toString();
+                        let contentH = $(element).html();//获取内容
+                        let markid = "M-" + $(element).get(0).tagName + "-" + index.toString();
                         $(this).attr('id', markid);
-                        if (tagetT.substr(1, 2) == '2') {
-                            var curcol = colorbang.pop();
+                        if (tagetT.substr(1, 2) === '2') {
+                            let curcol = colorbang.pop();
                             $(element).css('border-left', '5px solid ' + curcol);
-                            if ($(select).children('ul').length == 0) {
+                            if ($(select).children('ul').length === 0) {
                                 $(select).append(document.createElement('ul'));
                             }
-                            var h2ele = $(select).children('ul').get(0);
+                            let h2ele = $(select).children('ul').get(0);
                             $(h2ele).append("<li class='bookmark' style='transition-delay: " + speedstep + "s;'><a href='#" + markid + "' style='border-right: 5px solid " + curcol + ";'>" + contentH + "</a></li>");
                             lastElm = $(h2ele).children('li').get($(h2ele).children('li').length - 1);
                             speedstep = speedstep + .025;
                         } else {
                             if (lastElm) {
-                                if ($(lastElm).children('ul').length == 0) {
+                                if ($(lastElm).children('ul').length === 0) {
                                     $(lastElm).append(document.createElement('ul'));
                                 }
-                                var h3ele = $(lastElm).children('ul').get(0);
+                                let h3ele = $(lastElm).children('ul').get(0);
                                 $(h3ele).append("<li class='bookmark' style='transition-delay: " + speedstep + "s;'><a href='#" + markid + "' style='border-right: 5px solid #2c3e50;'>" + contentH + "</a></li>");
                                 speedstep = speedstep + .025;
                             }
@@ -68,39 +68,109 @@
                         }, 500);
                         return false;
                     });
-                    $('.bookmark').hover(function () {
-                        $('.bookmark').css('width', '150px');
+                    let bookmark = $('.bookmark');
+                    bookmark.hover(function () {
+                        bookmark.css('width', '150px');
                     }, function () {
-                        $('.bookmark').css('width', '20px');
+                        bookmark.css('width', '20px');
                     });
                 }
             }
         });
 
         function nav_change_resize() {
-            if (window.innerWidth > 1024) {
-                $('.wrapper-content').css('width', '60%');
+            let wrapper_content = $('.wrapper-content');
+            let withNbr = window.innerWidth - wrapper_content.offset().left;
+            let pixNbr = wrapper_content.outerWidth() - wrapper_content.width();
+            $('.article-nav-wrap').css('margin-left', withNbr - pixNbr + 10);
+        }
+
+        let article = /g[0-9]*\/a([0-9]*)/.exec(window.location.pathname)[1];
+
+        function over() {
+            let quote_label = $('.quote_label');
+            quote_label.width(quote_label.width());
+            quote_label.text('✘');
+            quote_label.css('color', '#ff0000');
+        }
+
+        function out() {
+            let quote_label = $('.quote_label');
+            quote_label.text($('#message').prev().children('label').attr('data-original-name'));
+            quote_label.css('color', '#fff');
+        }
+
+        function quoteMessage(dom) {
+            let quote = $(dom).parent().children('strong'),
+                message = $('#message').prev();
+
+            del_quote();
+            message.append('<label class="quote_label" onmouseover= "over()" onmouseout="out(this)" onclick="del_quote()"></label>');
+            message.children('label').attr('data-original-name', quote.text());
+            message.children('label').attr('data-msg-code', quote.attr('data-msg-code'));
+            message.children('label').text(quote.text());
+        }
+
+        function del_quote() {
+            let label = $('#message').prev();
+            label.empty();
+            label.text('您的留言');
+        }
+
+        function vaildFormData() {
+            let form = document.getElementsByClassName('needs-validation')[0];
+            if (form.checkValidity() === false) {
+                form.classList.add('was-validated');
+            } else {
+                let name = $('#username').val(),
+                    email = $('#email').val(),
+                    quote = $('#message').prev().children('label').attr('data-msg-code'),
+                    message = $('#message').val();
+                $.post('{% url 'msg_board:add' %}', {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    'articleId': article,
+                    'name': name,
+                    'email': email,
+                    'quote': quote || null,
+                    'message': message,
+                }, function (result) {
+                    if (result && result.success) {
+                        loadNewContents();
+                    } else {
+                        alert(result.message);
+                    }
+                    form.reset();
+                });
+                form.classList.remove('was-validated');
             }
-            else {
-                $('.wrapper-content').removeAttr('style');
-            }
-            var withNbr = $('.wrapper-content').offset().left + $('.wrapper-content').outerWidth();
-            $('.article-nav-wrap').css('margin-left', withNbr);
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        function loadNewContents() {
+            $.get('{% url 'msg_board:list' %}', {
+                'articleId': article,
+            }, function (result) {
+                if (result.length > 0) {
+                    $('#leave_message').html(result);
+                }
+            });
         }
 
         $(window).resize(function () {
             nav_change_resize();
         });
         $(function () {
-            $('.article_content').initializeImage();
-            $('.article_content').initializeCode();
-            $('.article_content').initializeNav(".article-nav-list");
+            let article_content = $('.article_content');
+            article_content.initializeImage();
+            article_content.initializeCode();
+            article_content.initializeNav(".article-nav-list");
             {% if dict.draft %}
                 $('#ppt').show().on('click', function () {
                     $('body').prop('scrollTop', '0').css("overflow", "hidden");
                     $('.cl-nav-bar').addClass('ptt_navbar');
                     $('.wrapper-content').addClass('ppt_container');
-                    var iframe = document.createElement("iframe");
+                    let iframe = document.createElement("iframe");
                     iframe.src = "{{ dict.draft }}";
                     iframe.width = "100%";
                     iframe.height = "100%";
@@ -118,6 +188,7 @@
                 });
             {% endif %}
             nav_change_resize();
+            loadNewContents();
         });
     </script>
 {% endblock %}
@@ -137,6 +208,7 @@
                 {% endif %}
                 {{ dict.article }}
             </div>
+            <div class="col-12" id="leave_message"></div>
         </div>
     </div>
     <div class="article-nav-wrap d-none d-xl-block">

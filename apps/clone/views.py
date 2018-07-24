@@ -163,7 +163,7 @@ def save_clone_page(request):
     save_data = Cache().get(request.POST.get('save_key'))
     save_article.group = ArticleGroup.objects.get(groupid=0)
     save_article.title = save_data['title']
-    save_article.comment = '转发自网络'
+    save_article.comment = '转发文章'
     save_article.summary = '本文转自{0}，侵权删除'.format(save_data['url'])
     save_article.context = save_data['article']
     save_article.save()

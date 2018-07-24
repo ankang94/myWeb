@@ -1,0 +1,63 @@
+<div class="my-3 p-3 mt-5 bg-white rounded box-shadow">
+    <h5 class="border-bottom border-gray pb-2 mb-0">留言({{ ret.pagination.total }}条)</h5>
+    {% for foo in ret.list %}
+        <div class="media pt-3">
+            <p class="media-body pb-3 mb-0 border-bottom border-gray">
+                <strong class="d-block text-gray-dark" data-msg-code="{{ foo.id }}">@{{ foo.name }}</strong>
+                {% if foo.quote %}
+                <span class="d-block text-muted text-gray-dark mark small m-2 rounded">
+                    <strong class="d-block text-gray-dark">@{{ foo.quote.name }}</strong>
+                    {{ foo.quote.message }}
+                </span>
+                {% endif %}
+                {{ foo.message }}
+                <span class="d-block text-gray-dark small text-right pt-3">{{ foo.time }} | <a href="javascript:void(0)" onclick="quoteMessage($(this).parent())">引用</a></span>
+            </p>
+        </div>
+    {% empty %}
+        <div class="media pt-3">
+            <p class="media-body pb-3 mb-0 border-bottom border-gray">暂时没有留言</p>
+        </div>
+    {% endfor %}
+
+    <h5 class="mb-3 pt-5">我要发表看法</h5>
+    <hr class="mb-4">
+    <form class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="message" class="small text-gray-dark">您的留言</label>
+            <textarea type="message" class="form-control" id="message" rows="10" cols="50" placeholder="message"
+                      required></textarea>
+            <div class="invalid-feedback">
+                Leave message is required.
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="username" class="small text-gray-dark">您的昵称</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                    </div>
+                    <input type="text" class="form-control" id="username" placeholder="username" required>
+                    <div class="invalid-feedback" style="width: 100%;">
+                        Your name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="email" class="small text-gray-dark">您的邮箱(不公开)<span class="text-muted"></span></label>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                <div class="invalid-feedback">
+                    Please enter a valid email address for shipping updates.
+                </div>
+            </div>
+        </div>
+        <hr class="mb-4">
+        <div class="pull-right mb-3">
+            <button class="btn btn-primary" onclick="vaildFormData()">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </button>
+        </div>
+    </form>
+</div>
+

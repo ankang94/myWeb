@@ -328,7 +328,7 @@ h2 small {
 
 .article-nav-wrap {
     position: fixed;
-    top: 20%;
+    top: 30%;
 }
 
 .article-nav-list {
@@ -390,6 +390,18 @@ h3.title-nav {
 
 .article-nav-list > ul > li > ul > li {
     list-style-type: none;
+}
+
+.quote_label {
+    background-color: #6c757d;
+    color: #fff;
+    margin-left: 5px;
+    padding: .25em .4em;
+    font-weight: 600;
+    line-height: 1;
+    display: inline-block;
+    text-align: center;
+    border-radius: .25rem;
 }
 
 #to-top {
