@@ -163,9 +163,9 @@
                 return content.nodeType === 3;
             }).text();
             if (action === 'P') {
-                loadNewContents(page - 1);
+                loadNewContents(parseInt(page) - 1 + '');
             } else if (action === 'N') {
-                loadNewContents(page + 1);
+                loadNewContents(parseInt(page) + 1 + '');
             } else {
                 if (action === page) {
                     return;

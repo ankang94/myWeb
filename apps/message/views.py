@@ -9,8 +9,10 @@ def message_list(request):
     if result.get('success'):
         pagination = result.get('data').get('pagination')
         page_max = int(math.ceil(pagination.get('total') / pagination.get('size')))
-        start = int(pagination.get('current') / 5) + 1
+        start = pagination.get('current') / 5
+        start = int(start) * 5 + 1 if start > 1 else 1
         offset = pagination.get('current') % 5
+        offset = 5 if offset == 0 else offset
         end = start + 4 if start + 4 < page_max else page_max
         prev_status = 'disabled' if start in range(1, 6) else ''
         next_status = 'disabled' if end in range(page_max + offset - 5, page_max + 1) else ''
