@@ -135,7 +135,7 @@
                     'message': message,
                 }, function (result) {
                     if (result && result.success) {
-                        loadNewContents();
+                        loadNewContents(1);
                     } else {
                         alert(result.message);
                     }
@@ -147,14 +147,31 @@
             event.stopPropagation();
         }
 
-        function loadNewContents() {
+        function loadNewContents(pageNum) {
             $.get('{% url 'msg_board:list' %}', {
                 'articleId': article,
+                'pageNum': pageNum || 1
             }, function (result) {
                 if (result.length > 0) {
                     $('#leave_message').html(result);
                 }
             });
+        }
+
+        function jumpPage(action) {
+            let page = $('.page-item.active').children('a').contents().filter(function (index, content) {
+                return content.nodeType === 3;
+            }).text();
+            if (action === 'P') {
+                loadNewContents(page - 1);
+            } else if (action === 'N') {
+                loadNewContents(page + 1);
+            } else {
+                if (action === page) {
+                    return;
+                }
+                loadNewContents(action);
+            }
         }
 
         $(window).resize(function () {
