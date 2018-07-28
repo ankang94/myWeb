@@ -15,9 +15,9 @@ class VisitorAdmin(object):
 
 
 class MessageAdmin(object):
-    list_display = ['visitor', 'article', 'message', 'parent', 'date']
+    list_display = ['visitor', 'article', 'message', 'date']
     list_editable = ['message', 'date']
-    list_filter = ('visitor', 'article', 'date')
+    list_filter = ('visitor__name', 'article__title', 'date')
     model_icon = 'fa fa-commenting-o'
 
 
