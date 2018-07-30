@@ -38,7 +38,9 @@ $(function () {
             if ((navigationBar.height() + navigationContent.height() + navigationFooter.height()) < navigationContent.width() * 1.5) {
                 navigationContent.height(navigationContent.width() * 1.5);
             } else {
-                navigationContent.removeAttr('style');
+                if (!catlogFlag) {
+                    navigationContent.removeAttr('style');
+                }
             }
             if ($('.catlog-grid').height() > navigationContent.width() * 1.5 || innerWidth < 450) {
                 $('#pagebar').css('position', 'static');
