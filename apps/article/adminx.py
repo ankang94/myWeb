@@ -6,6 +6,7 @@ import os
 from django.conf import settings
 from xadmin.sites import site
 from xadmin.views import BaseAdminView, CommAdminView
+from xadmin.plugins.actions import DeleteSelectedAction
 from apps.article.models import Article, ArticleGroup, Script, Image, ExtSource
 from .xplugin import RefreshButton, RefreshPlugin
 
@@ -24,6 +25,16 @@ class GlobalSetting(object):
 
 site.register(BaseAdminView, BaseSetting)
 site.register(CommAdminView, GlobalSetting)
+
+
+class DeleteRelAction(DeleteSelectedAction):
+    def delete_models(self, queryset):
+        super().delete_models(queryset)
+        delete_path = 'img' if self.model_name == 'image' else 'ext'
+        for obj in queryset:
+            file = os.path.join(settings.MEDIA_ROOT, delete_path, obj.path.url.split('/')[-1])
+            if os.path.exists(file):
+                os.remove(file)
 
 
 class ArticleAdmin(object):
@@ -53,6 +64,7 @@ class ImageAdmin(object):
     list_editable = ['name']
     search_fields = ('name',)
     model_icon = 'fa fa-file-image-o'
+    actions = [DeleteRelAction, ]
 
     def delete_model(self):
         self.log('delete', '', self.obj)
@@ -68,6 +80,7 @@ class ExtSourceAdmin(object):
     list_filter = ('type', 'state')
     model_icon = 'fa fa-object-group'
     ordering = ['type', 'seq']
+    actions = [DeleteRelAction, ]
 
     def delete_model(self):
         self.log('delete', '', self.obj)
