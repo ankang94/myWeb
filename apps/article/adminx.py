@@ -29,12 +29,12 @@ site.register(CommAdminView, GlobalSetting)
 
 class DeleteRelAction(DeleteSelectedAction):
     def delete_models(self, queryset):
-        super().delete_models(queryset)
         delete_path = 'img' if self.model_name == 'image' else 'ext'
         for obj in queryset:
             file = os.path.join(settings.MEDIA_ROOT, delete_path, obj.path.url.split('/')[-1])
             if os.path.exists(file):
                 os.remove(file)
+        super().delete_models(queryset)
 
 
 class ArticleAdmin(object):
