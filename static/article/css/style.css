@@ -431,6 +431,10 @@ h3.title-nav {
     display: block;
 }
 
+p.media-body {
+	word-break: break-all;
+}
+
 @media only screen and (min-width: 768px) {
     .header-content {
         height: 400px;
