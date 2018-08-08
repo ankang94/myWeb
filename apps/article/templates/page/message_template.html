@@ -32,10 +32,12 @@
             {% for page in pages %}
                 {% if forloop.counter == offset %}
                     <li class="page-item active">
-                        <a class="page-link" href="javascript:void(0)" onclick="jumpPage('{{ page }}')">{{ page }}<span class="sr-only">(current)</span></a>
+                        <a class="page-link" href="javascript:void(0)" onclick="jumpPage('{{ page }}')">{{ page }}<span
+                                class="sr-only">(current)</span></a>
                     </li>
                 {% else %}
-                    <li class="page-item"><a class="page-link" href="javascript:void(0)" onclick="jumpPage('{{ page }}')">{{ page }}</a></li>
+                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
+                                             onclick="jumpPage('{{ page }}')">{{ page }}</a></li>
                 {% endif %}
             {% endfor %}
             <li class="page-item {{ ns }}">
@@ -53,7 +55,7 @@
         <div class="mb-3">
             <label for="message" class="small text-gray-dark">您的留言</label>
             <textarea type="message" class="form-control" id="message" rows="10" cols="50" placeholder="message"
-                      required></textarea>
+                      required maxlength="500"></textarea>
             <div class="invalid-feedback">
                 Leave message is required.
             </div>
@@ -65,7 +67,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">@</span>
                     </div>
-                    <input type="text" class="form-control" id="username" placeholder="username" required>
+                    <input type="text" class="form-control" id="username" placeholder="username" minlength="2"
+                           maxlength="20" required>
                     <div class="invalid-feedback" style="width: 100%;">
                         Your name is required.
                     </div>
@@ -73,7 +76,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="email" class="small text-gray-dark">您的邮箱(不公开)<span class="text-muted"></span></label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com" maxlength="30" required>
                 <div class="invalid-feedback">
                     Please enter a valid email address for shipping updates.
                 </div>

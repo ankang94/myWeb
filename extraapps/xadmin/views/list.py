@@ -579,6 +579,9 @@ class ListAdminView(ModelAdminView):
                 url = self.url_for_result(obj)
                 item.wraps.append(u'<a href="%s">%%s</a>' % url)
 
+        if len(str(obj)) > 100:
+            item.classes.append('message-break')
+
         return item
 
     @filter_hook

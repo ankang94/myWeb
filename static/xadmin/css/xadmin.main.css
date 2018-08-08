@@ -424,3 +424,8 @@ a[class^="icon-"]:before, a[class*=" icon-"]:before {
 form#changelist-form + .pagination {
   margin-top: 0px;
 }
+
+/* message word too long */
+.message-break {
+  word-break: break-all;
+}
